@@ -20,7 +20,7 @@ test-cov-xml:
     uv run pytest --cov-report=xml
 
 docs-serve:
-    uv run mkdocs serve
+    uv run mkdocs serve -w docs/ -w mkdocs.yml --watch-theme
 
 docs-build:
     uv run mkdocs build
