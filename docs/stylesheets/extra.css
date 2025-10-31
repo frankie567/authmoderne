@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@300..700&display=swap");
 
 /* ============================================================================
    AuthModerne - Streamline Moderne Inspired Color Scheme
@@ -8,6 +9,19 @@
 /* ----------------------------------------------------------------------------
    Typography
    ---------------------------------------------------------------------------- */
+
+/* Body text - DM Sans for optimal readability with modern aesthetic */
+body,
+.md-typeset {
+    font-family:
+        "DM Sans",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    font-weight: 400;
+}
 
 h1,
 h2,
@@ -170,6 +184,11 @@ h6 {
     border-bottom: 1px solid rgba(26, 24, 22, 0.1) !important;
 }
 
+/* Override Material's --shadow state in light mode */
+.md-header--shadow {
+    box-shadow: none !important;
+}
+
 /* Header title - Major Mono Display font */
 .md-header__title {
     font-family: "Major Mono Display", monospace;
@@ -185,6 +204,11 @@ h6 {
     background-color: #0f1114 !important;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.8) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Override Material's --shadow state in dark mode */
+[data-md-color-scheme="slate"] .md-header--shadow {
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.8) !important;
 }
 
 [data-md-color-scheme="slate"] .md-header__inner {
@@ -236,7 +260,9 @@ h6 {
     border-top: 1px solid var(--md-typeset-table-color--light);
 }
 
-/* Buttons - Sharp corners with visible backgrounds */
+/* Buttons - Sharp corners with visible backgrounds
+   Note: !important is required here because Material applies inline styles
+   and uses higher specificity selectors for button states */
 .md-button {
     border-radius: 0 !important;
     background-color: #f0ede8 !important;
@@ -286,13 +312,151 @@ h6 {
     color: #e8e8e8 !important;
 }
 
-/* Admonitions - Minimal boxes */
-.md-typeset .admonition {
+/* Admonitions - Minimal boxes with theme-consistent styling */
+.md-typeset .admonition,
+.md-typeset details.admonition {
     border-radius: 0;
-    border-left: 3px solid rgba(139, 125, 107, 0.6);
+    border: 1px solid rgba(26, 24, 22, 0.15);
+    background-color: #f0ede8;
+    box-shadow: none;
 }
 
-[data-md-color-scheme="slate"] .md-typeset .admonition {
-    border-left-color: rgba(100, 120, 140, 0.5);
-    background-color: rgba(15, 17, 20, 0.3);
+/* Desaturate admonition colors in light mode */
+.md-typeset .admonition.note {
+    border-color: rgba(68, 138, 255, 0.2);
+}
+
+.md-typeset .admonition.warning,
+.md-typeset .admonition.attention,
+.md-typeset .admonition.caution {
+    border-color: rgba(255, 145, 0, 0.2);
+}
+
+.md-typeset .admonition.danger,
+.md-typeset .admonition.error {
+    border-color: rgba(255, 82, 82, 0.2);
+}
+
+.md-typeset .admonition.tip,
+.md-typeset .admonition.hint,
+.md-typeset .admonition.important {
+    border-color: rgba(0, 191, 165, 0.2);
+}
+
+.md-typeset .admonition.success,
+.md-typeset .admonition.check,
+.md-typeset .admonition.done {
+    border-color: rgba(0, 200, 83, 0.2);
+}
+
+/* Admonition title */
+.md-typeset .admonition-title,
+.md-typeset summary.admonition-title {
+    background-color: rgba(240, 237, 232, 0.8);
+    border-bottom: 1px solid rgba(26, 24, 22, 0.1);
+    font-weight: 600;
+}
+
+/* Dark mode admonitions */
+[data-md-color-scheme="slate"] .md-typeset .admonition,
+[data-md-color-scheme="slate"] .md-typeset details.admonition {
+    border: 1px solid rgba(100, 120, 140, 0.2);
+    background-color: #1a1c20;
+    box-shadow: none;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset summary.admonition-title {
+    border-bottom: 1px solid rgba(100, 120, 140, 0.15);
+}
+
+/* Dark mode - subtle type indication via title background */
+[data-md-color-scheme="slate"] .md-typeset .admonition.note .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.note
+    summary.admonition-title {
+    background-color: rgba(68, 138, 255, 0.08);
+}
+
+[data-md-color-scheme="slate"]
+    .md-typeset
+    .admonition.warning
+    .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    .admonition.attention
+    .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    .admonition.caution
+    .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.warning
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.attention
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.caution
+    summary.admonition-title {
+    background-color: rgba(255, 145, 0, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.danger .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .admonition.error .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.danger
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.error
+    summary.admonition-title {
+    background-color: rgba(255, 82, 82, 0.08);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.tip .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .admonition.hint .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    .admonition.important
+    .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.tip
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.hint
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.important
+    summary.admonition-title {
+    background-color: rgba(0, 191, 165, 0.08);
+}
+
+[data-md-color-scheme="slate"]
+    .md-typeset
+    .admonition.success
+    .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .admonition.check .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .admonition.done .admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.success
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.check
+    summary.admonition-title,
+[data-md-color-scheme="slate"]
+    .md-typeset
+    details.admonition.done
+    summary.admonition-title {
+    background-color: rgba(0, 200, 83, 0.08);
 }

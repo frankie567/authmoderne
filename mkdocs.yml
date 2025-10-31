@@ -49,6 +49,9 @@ markdown_extensions:
     - pymdownx.snippets
     - pymdownx.superfences
     - attr_list
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
 
 plugins:
     - search
