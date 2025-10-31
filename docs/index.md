@@ -14,86 +14,81 @@ hide:
     padding: 2rem 0;
 }
 
-.hero-buildings {
+.hero-building-left,
+.hero-building-right {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: 1200px;
+    bottom: -3rem;
+    width: 180px;
     height: auto;
-    opacity: 0.08;
+    opacity: 0.18;
     pointer-events: none;
-    z-index: 0;
 }
 
-[data-md-color-scheme="slate"] .hero-buildings {
-    opacity: 0.06;
+.hero-building-left {
+    left: 20px;
+}
+
+.hero-building-right {
+    right: 20px;
+}
+
+[data-md-color-scheme="slate"] .hero-building-left,
+[data-md-color-scheme="slate"] .hero-building-right {
+    opacity: 0.12;
 }
 
 .hero-content {
-    position: relative;
-    z-index: 1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+    .hero-building-left,
+    .hero-building-right {
+        display: none;
+    }
 }
 </style>
 
 <div class="hero-wrapper">
-    <svg class="hero-buildings" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
-        <!-- Left building - tall with horizontal bands -->
-        <g stroke="currentColor" fill="none" stroke-width="2">
-            <!-- Main tower -->
-            <rect x="50" y="120" width="120" height="280" rx="0"/>
-            <!-- Horizontal bands -->
-            <line x1="50" y1="160" x2="170" y2="160"/>
-            <line x1="50" y1="200" x2="170" y2="200"/>
-            <line x1="50" y1="240" x2="170" y2="240"/>
-            <line x1="50" y1="280" x2="170" y2="280"/>
-            <line x1="50" y1="320" x2="170" y2="320"/>
-            <line x1="50" y1="360" x2="170" y2="360"/>
-            <!-- Top detail -->
-            <rect x="70" y="100" width="80" height="20" rx="10"/>
-        </g>
-        <!-- Center building - wide with curved corner -->
-        <g stroke="currentColor" fill="none" stroke-width="2">
-            <!-- Main structure -->
-            <path d="M 250 180 L 250 400 L 550 400 L 550 200 Q 550 180 530 180 Z"/>
+    <!-- Left building caryatid -->
+    <svg class="hero-building-left" viewBox="0 0 140 400" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" fill="none" stroke-width="1.5">
+            <!-- Main tower structure -->
+            <rect x="20" y="40" width="100" height="360" rx="0"/>
+
+            <!-- Stepped top detail -->
+            <rect x="30" y="25" width="80" height="15"/>
+            <rect x="45" y="15" width="50" height="10" rx="5"/>
+            <circle cx="70" cy="10" r="3" fill="currentColor"/>
+
             <!-- Horizontal window bands -->
-            <line x1="250" y1="220" x2="550" y2="220"/>
-            <line x1="250" y1="260" x2="550" y2="260"/>
-            <line x1="250" y1="300" x2="550" y2="300"/>
-            <line x1="250" y1="340" x2="550" y2="340"/>
-            <!-- Vertical divisions -->
-            <line x1="320" y1="180" x2="320" y2="400"/>
-            <line x1="400" y1="180" x2="400" y2="400"/>
-            <line x1="480" y1="180" x2="480" y2="400"/>
-            <!-- Stepped top -->
-            <rect x="280" y="160" width="60" height="20"/>
-            <rect x="360" y="140" width="60" height="20"/>
-        </g>
-        <!-- Right building - streamlined with porthole -->
-        <g stroke="currentColor" fill="none" stroke-width="2">
-            <!-- Main structure with rounded end -->
-            <rect x="650" y="150" width="180" height="250" rx="0"/>
-            <circle cx="830" cy="275" r="90"/>
-            <!-- Horizontal speed lines -->
-            <line x1="650" y1="190" x2="920" y2="190"/>
-            <line x1="650" y1="230" x2="920" y2="230"/>
-            <line x1="650" y1="270" x2="920" y2="270"/>
-            <line x1="650" y1="310" x2="920" y2="310"/>
-            <line x1="650" y1="350" x2="920" y2="350"/>
-            <!-- Porthole window -->
-            <circle cx="830" cy="275" r="35"/>
-            <circle cx="830" cy="275" r="25"/>
-        </g>
-        <!-- Far right - small tower accent -->
-        <g stroke="currentColor" fill="none" stroke-width="2">
-            <rect x="1000" y="220" width="80" height="180" rx="0"/>
-            <rect x="1015" y="200" width="50" height="20" rx="10"/>
-            <line x1="1000" y1="260" x2="1080" y2="260"/>
-            <line x1="1000" y1="300" x2="1080" y2="300"/>
-            <line x1="1000" y1="340" x2="1080" y2="340"/>
+            <line x1="20" y1="70" x2="120" y2="70"/>
+            <line x1="20" y1="100" x2="120" y2="100"/>
+            <line x1="20" y1="130" x2="120" y2="130"/>
+            <line x1="20" y1="160" x2="120" y2="160"/>
+            <line x1="20" y1="190" x2="120" y2="190"/>
+            <line x1="20" y1="220" x2="120" y2="220"/>
+            <line x1="20" y1="250" x2="120" y2="250"/>
+            <line x1="20" y1="280" x2="120" y2="280"/>
+            <line x1="20" y1="310" x2="120" y2="310"/>
+            <line x1="20" y1="340" x2="120" y2="340"/>
+            <line x1="20" y1="370" x2="120" y2="370"/>
+
+            <!-- Vertical divisions creating window grid -->
+            <line x1="45" y1="40" x2="45" y2="400"/>
+            <line x1="70" y1="40" x2="70" y2="400"/>
+            <line x1="95" y1="40" x2="95" y2="400"/>
+
+            <!-- Decorative vertical strips -->
+            <rect x="25" y="40" width="3" height="360" fill="currentColor" opacity="0.3"/>
+            <rect x="112" y="40" width="3" height="360" fill="currentColor" opacity="0.3"/>
+
+            <!-- Base detail -->
+            <rect x="15" y="395" width="110" height="5" fill="currentColor" opacity="0.2"/>
         </g>
     </svg>
+    <!-- Center hero content -->
     <div class="hero-content">
         <h1>AuthModerne</h1>
         <p><strong>Streamlined authentication for modern Python applications.</strong></p>
@@ -107,6 +102,63 @@ hide:
             <a href="https://github.com/frankie567/authmoderne" class="md-button">View on GitHub</a>
         </p>
     </div>
+
+    <!-- Right building caryatid -->
+    <svg class="hero-building-right" viewBox="0 0 160 400" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" fill="none" stroke-width="1.5">
+            <!-- Wide horizontal base structure -->
+            <rect x="10" y="80" width="140" height="320" rx="0"/>
+
+            <!-- Curved corner detail (signature Streamline Moderne) -->
+            <path d="M 150 100 Q 150 80 135 80" fill="none"/>
+
+            <!-- Stepped tower element -->
+            <rect x="50" y="40" width="60" height="40"/>
+            <rect x="65" y="25" width="30" height="15" rx="7"/>
+            <circle cx="80" cy="20" r="4" fill="currentColor"/>
+
+            <!-- Horizontal bands emphasizing width -->
+            <line x1="10" y1="110" x2="150" y2="110"/>
+            <line x1="10" y1="140" x2="150" y2="140"/>
+            <line x1="10" y1="170" x2="150" y2="170"/>
+            <line x1="10" y1="200" x2="150" y2="200"/>
+            <line x1="10" y1="230" x2="150" y2="230"/>
+            <line x1="10" y1="260" x2="150" y2="260"/>
+            <line x1="10" y1="290" x2="150" y2="290"/>
+            <line x1="10" y1="320" x2="150" y2="320"/>
+            <line x1="10" y1="350" x2="150" y2="350"/>
+            <line x1="10" y1="380" x2="150" y2="380"/>
+
+            <!-- Vertical window strips -->
+            <line x1="40" y1="80" x2="40" y2="400"/>
+            <line x1="80" y1="40" x2="80" y2="400"/>
+            <line x1="120" y1="80" x2="120" y2="400"/>
+
+            <!-- Circular porthole window with details -->
+            <circle cx="80" cy="200" r="30"/>
+            <circle cx="80" cy="200" r="22"/>
+            <circle cx="80" cy="200" r="14"/>
+            <circle cx="80" cy="200" r="6" fill="currentColor" opacity="0.3"/>
+
+            <!-- Porthole cross divisions -->
+            <line x1="80" y1="170" x2="80" y2="230" opacity="0.5"/>
+            <line x1="50" y1="200" x2="110" y2="200" opacity="0.5"/>
+
+            <!-- Decorative speed lines on right -->
+            <line x1="130" y1="100" x2="145" y2="100" stroke-width="2"/>
+            <line x1="130" y1="150" x2="145" y2="150" stroke-width="2"/>
+            <line x1="130" y1="250" x2="145" y2="250" stroke-width="2"/>
+            <line x1="130" y1="300" x2="145" y2="300" stroke-width="2"/>
+
+            <!-- Base platform -->
+            <rect x="5" y="395" width="150" height="5" fill="currentColor" opacity="0.2"/>
+
+            <!-- Vertical accent strips -->
+            <rect x="15" y="80" width="3" height="320" fill="currentColor" opacity="0.3"/>
+            <rect x="142" y="80" width="3" height="320" fill="currentColor" opacity="0.3"/>
+        </g>
+    </svg>
+
 </div>
 
 ---
