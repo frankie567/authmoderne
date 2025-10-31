@@ -1,0 +1,64 @@
+site_name: AuthModerne
+site_description: Streamlined authentication for modern Python applications.
+
+repo_url: https://github.com/frankie567/authmoderne
+repo_name: frankie567/authmoderne
+
+theme:
+    name: material
+    icon:
+        logo: material/train-variant
+    palette:
+        # Palette toggle for automatic mode
+        - media: "(prefers-color-scheme)"
+          toggle:
+              icon: material/brightness-auto
+              name: Switch to light mode
+
+        # Palette toggle for light mode
+        - media: "(prefers-color-scheme: light)"
+          scheme: default
+          primary: black
+          accent: red
+          toggle:
+              icon: material/brightness-7
+              name: Switch to dark mode
+
+        # Palette toggle for dark mode
+        - media: "(prefers-color-scheme: dark)"
+          scheme: slate
+          primary: black
+          accent: red
+          toggle:
+              icon: material/brightness-4
+              name: Switch to light mode
+
+markdown_extensions:
+    - toc:
+          permalink: true
+    - pymdownx.highlight:
+          anchor_linenums: true
+    - pymdownx.tasklist:
+          custom_checkbox: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+
+plugins:
+    - search
+    - mkdocstrings:
+          handlers:
+              python:
+                  inventories:
+                      - https://docs.python.org/3.13/objects.inv
+                  options:
+                      docstring_style: google
+
+watch:
+    - docs
+    - authmoderne
+
+nav:
+    - About: index.md
+    - Reference:
+          - authmoderne: reference/authmoderne.md

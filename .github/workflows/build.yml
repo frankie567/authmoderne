@@ -1,0 +1,71 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                python_version: ['3.13']
+
+        steps:
+            - uses: actions/checkout@v5
+            - name: Set up Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: ${{ matrix.python_version }}
+            - name: Setup Just
+              uses: extractions/setup-just@v3
+            - name: Install uv and set the Python version
+              uses: astral-sh/setup-uv@v7
+              with:
+                  python-version: ${{ matrix.python_version }}
+            - name: Install the project
+              run: uv sync --all-extras --dev
+            - name: Lint and typecheck
+              run: |
+                  just lint-check
+            - name: Test
+              run: |
+                  just test-cov-xml
+            - uses: codecov/codecov-action@v5
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+                  fail_ci_if_error: true
+                  verbose: true
+
+    release:
+        runs-on: ubuntu-latest
+        environment: release
+        needs: test
+        if: startsWith(github.ref, 'refs/tags/')
+        permissions:
+            contents: write
+            id-token: write
+
+        steps:
+            - uses: actions/checkout@v5
+            - name: Set up Python
+              uses: actions/setup-python@v6
+              with:
+                  python-version: '3.13'
+            - name: Setup Just
+              uses: extractions/setup-just@v3
+            - name: Install uv and set the Python version
+              uses: astral-sh/setup-uv@v7
+              with:
+                  python-version: '3.13'
+            - name: Install the project
+              run: uv sync --all-extras --dev
+            - name: Build and publish on PyPI
+              run: |
+                  uv build
+                  uv publish
+            - name: Create release
+              uses: ncipollo/release-action@v1
+              with:
+                  draft: true
+                  body: ${{ github.event.head_commit.message }}
+                  artifacts: dist/*.whl,dist/*.tar.gz
+                  token: ${{ secrets.GITHUB_TOKEN }}

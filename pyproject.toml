@@ -1,0 +1,66 @@
+
+[project]
+name = "authmoderne"
+authors = [
+  { name = "authmoderne", email = "contact@francoisvoron.com" }
+]
+description = "Streamlined authentication for modern Python applications."
+readme = "README.md"
+dynamic = ["version"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.13"
+dependencies = [
+    "anyio",
+]
+
+[project.urls]
+Documentation = "https://frankie567.github.io/authmoderne/"
+Source = "https://github.com/frankie567/authmoderne"
+
+[build-system]
+requires = ["hatchling", "hatch-regex-commit"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "regex_commit"
+commit_extra_args = ["-e"]
+path = "authmoderne/__init__.py"
+
+[dependency-groups]
+dev = [
+    "mypy",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    
+]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+extend-select = ["I", "TRY", "UP"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=authmoderne/ --cov-report=term-missing"
+
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.mypy]
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_reexport = true
+strict_equality = true
+disallow_untyped_defs = true
+
+[tool.basedpyright]
+typeCheckingMode = "off"
