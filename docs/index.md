@@ -149,11 +149,6 @@ hide:
         <h1>AuthModerne</h1>
         <p><strong>Streamlined authentication for modern Python applications.</strong></p>
         <p>
-            <a href="https://github.com/frankie567/authmoderne/actions"><img src="https://github.com/frankie567/authmoderne/workflows/Build/badge.svg" alt="build"></a>
-            <a href="https://codecov.io/gh/frankie567/authmoderne"><img src="https://codecov.io/gh/frankie567/authmoderne/branch/master/graph/badge.svg" alt="codecov"></a>
-            <a href="https://badge.fury.io/py/authmoderne"><img src="https://badge.fury.io/py/authmoderne.svg" alt="PyPI version"></a>
-        </p>
-        <p>
             <a href="#installation" class="md-button md-button--primary">Get Started</a>
             <a href="https://github.com/frankie567/authmoderne" class="md-button">View on GitHub</a>
         </p>
@@ -336,31 +331,13 @@ uv add authmoderne
 !!! example "Basic Usage"
 
     ```python
-    from authmoderne import Auth
-
-    # Initialize authentication
-    auth = Auth()
-
-    # Your authentication logic here
-    @auth.login
-    async def authenticate(username: str, password: str):
-        # Verify credentials
-        return user
+    # TODO
     ```
 
 !!! tip "Configuration"
 
     ```python
-    from authmoderne import Config
-
-    # Customize your setup
-    config = Config(
-        secret_key="your-secret-key",
-        algorithm="HS256",
-        token_expiry=3600
-    )
-
-    auth = Auth(config=config)
+    # TODO
     ```
 
 </div>
