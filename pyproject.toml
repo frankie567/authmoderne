@@ -14,6 +14,12 @@ classifiers = [
 requires-python = ">=3.13"
 dependencies = [
     "anyio",
+    "pydantic>=2.0.0",
+]
+
+[project.optional-dependencies]
+sqlalchemy = [
+    "sqlalchemy>=2.0.0"
 ]
 
 [project.urls]
@@ -37,7 +43,7 @@ dev = [
     "pytest-cov",
     "mkdocs-material",
     "mkdocstrings[python]",
-    
+    "trio",
 ]
 
 [tool.ruff]
