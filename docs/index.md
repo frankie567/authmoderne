@@ -1,5 +1,5 @@
 ---
-title: AuthModerne
+title: Authmoderne
 description: Streamlined authentication for modern Python applications
 hide:
     - navigation
@@ -146,7 +146,7 @@ hide:
     </svg>
     <!-- Center hero content -->
     <div class="hero-content">
-        <h1>AuthModerne</h1>
+        <h1>Authmoderne</h1>
         <p><strong>Streamlined authentication for modern Python applications.</strong></p>
         <p>
             <a href="#installation" class="md-button md-button--primary">Get Started</a>
@@ -272,7 +272,7 @@ hide:
 
     ***
 
-    Built for performance with modern async Python, AuthModerne handles authentication without slowing down your application.
+    Built for performance with modern async Python, Authmoderne handles authentication without slowing down your application.
 
 - :material-puzzle:{ .lg .middle } **Modular Design**
 
@@ -310,7 +310,7 @@ hide:
 
 ## Installation
 
-Get started with AuthModerne in seconds:
+Get started with Authmoderne in seconds:
 
 ```bash
 pip install authmoderne
@@ -344,15 +344,15 @@ uv add authmoderne
 
 ---
 
-## Why AuthModerne?
+## Why Authmoderne?
 
-AuthModerne brings the elegance of **Streamline Moderne** design principles to Python authentication:
+Authmoderne brings the elegance of **Streamline Moderne** design principles to Python authentication:
 
 - **Clean lines** - Simple, composable API without unnecessary complexity
 - **Functional beauty** - Every component serves a purpose
 - **Modern approach** - Built for contemporary Python applications
 
-Just like the Art Deco movement emphasized sleek, horizontal lines and minimal ornamentation, AuthModerne focuses on essential functionality delivered with style.
+Just like the Art Deco movement emphasized sleek, horizontal lines and minimal ornamentation, Authmoderne focuses on essential functionality delivered with style.
 
 ---
 
@@ -380,7 +380,7 @@ Just like the Art Deco movement emphasized sleek, horizontal lines and minimal o
 
     ***
 
-    AuthModerne is open source under the MIT License
+    Authmoderne is open source under the MIT License
 
     [:octicons-arrow-right-24: MIT License](https://github.com/frankie567/authmoderne/blob/master/LICENSE)
 
@@ -390,6 +390,6 @@ Just like the Art Deco movement emphasized sleek, horizontal lines and minimal o
 
 <div style="text-align: center; margin: 3rem 0; opacity: 0.7;" markdown>
 
-Made with :material-train-variant: by the AuthModerne team
+Made with :material-train-variant: by the Authmoderne team
 
 </div>

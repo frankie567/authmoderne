@@ -1,4 +1,4 @@
-# AuthModerne
+# Authmoderne
 
 <p align="center">
     <em>Streamlined authentication for modern Python applications.</em>

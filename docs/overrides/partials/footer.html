@@ -1,0 +1,135 @@
+<!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Custom Footer - Streamline Moderne -->
+<footer class="md-footer">
+
+  <!-- Link to previous and/or next page -->
+  {% if "navigation.footer" in features %}
+    {% if page.previous_page or page.next_page %}
+      {% if page.meta and page.meta.hide %}
+        {% set hidden = "hidden" if "footer" in page.meta.hide %}
+      {% endif %}
+      <nav
+        class="md-footer__inner md-grid"
+        aria-label="{{ lang.t('footer') }}"
+        {{ hidden }}
+      >
+
+        <!-- Link to previous page -->
+        {% if page.previous_page %}
+          {% set direction = lang.t("footer.previous") %}
+          <a
+            href="{{ page.previous_page.url | url }}"
+            class="md-footer__link md-footer__link--prev"
+            aria-label="{{ direction }}: {{ page.previous_page.title | e }}"
+          >
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.previous or "material/arrow-left" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ page.previous_page.title }}
+              </div>
+            </div>
+          </a>
+        {% endif %}
+
+        <!-- Link to next page -->
+        {% if page.next_page %}
+          {% set direction = lang.t("footer.next") %}
+          <a
+            href="{{ page.next_page.url | url }}"
+            class="md-footer__link md-footer__link--next"
+            aria-label="{{ direction }}: {{ page.next_page.title | e }}"
+          >
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ page.next_page.title }}
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.next or "material/arrow-right" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endif %}
+
+  <!-- Custom minimal footer -->
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid" style="text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--md-default-fg-color--lightest);">
+
+      <!-- Streamline Moderne train icon -->
+      <div style="margin-bottom: 1rem; opacity: 0.7;">
+        <svg width="40" height="20" viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg" style="display: inline-block;">
+          <g stroke="currentColor" fill="none" stroke-width="1.5">
+            <path d="M 10 15 L 10 30 L 90 30 L 90 25 Q 95 20 95 15 Q 95 10 90 5 L 10 5 Z" fill="currentColor" opacity="0.1"/>
+            <line x1="10" y1="5" x2="10" y2="30"/>
+            <line x1="90" y1="5" x2="90" y2="25"/>
+            <path d="M 90 5 Q 110 5 115 17.5 Q 110 30 90 30"/>
+            <line x1="15" y1="12" x2="85" y2="12"/>
+            <line x1="15" y1="17.5" x2="85" y2="17.5"/>
+            <line x1="15" y1="23" x2="85" y2="23"/>
+            <rect x="20" y="8" width="8" height="7" rx="1"/>
+            <rect x="32" y="8" width="8" height="7" rx="1"/>
+            <rect x="44" y="8" width="8" height="7" rx="1"/>
+            <rect x="56" y="8" width="8" height="7" rx="1"/>
+            <rect x="68" y="8" width="8" height="7" rx="1"/>
+            <circle cx="100" cy="17.5" r="5"/>
+            <circle cx="100" cy="17.5" r="3"/>
+            <circle cx="25" cy="30" r="4" fill="currentColor" opacity="0.3"/>
+            <circle cx="45" cy="30" r="4" fill="currentColor" opacity="0.3"/>
+            <circle cx="65" cy="30" r="4" fill="currentColor" opacity="0.3"/>
+            <circle cx="85" cy="30" r="4" fill="currentColor" opacity="0.3"/>
+            <circle cx="25" cy="30" r="2"/>
+            <circle cx="45" cy="30" r="2"/>
+            <circle cx="65" cy="30" r="2"/>
+            <circle cx="85" cy="30" r="2"/>
+            <line x1="20" y1="34" x2="90" y2="34"/>
+            <line x1="105" y1="17.5" x2="115" y2="17.5" stroke-width="2"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Copyright and attribution -->
+      <div style="font-size: 0.75rem; opacity: 0.6; line-height: 1.6;">
+        <div>
+          Built with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid currentColor;">Material for MkDocs</a>
+        </div>
+        <div style="margin-top: 0.5rem;">
+          MIT License © {{ config.copyright or "Authmoderne" }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
