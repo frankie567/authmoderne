@@ -10,140 +10,281 @@ hide:
 .hero-wrapper {
     position: relative;
     text-align: center;
-    margin: 3rem 0;
+    margin: 3rem 0 4rem 0;
     padding: 2rem 0;
 }
 
-.hero-building-left,
-.hero-building-right {
+.hero-skyline {
     position: absolute;
     bottom: -3rem;
-    width: 280px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
     height: auto;
-    opacity: 0.18;
     pointer-events: none;
 }
 
-.hero-building-left {
-    left: 10px;
+/* Greyish tones for buildings */
+[data-md-color-scheme="default"] .hero-skyline {
+    opacity: 0.3;
 }
 
-.hero-building-right {
-    right: 10px;
-}
-
-[data-md-color-scheme="slate"] .hero-building-left,
-[data-md-color-scheme="slate"] .hero-building-right {
-    opacity: 0.12;
+[data-md-color-scheme="slate"] .hero-skyline {
+    opacity: 0.22;
 }
 
 .hero-content {
+    position: relative;
+    z-index: 1;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 0 auto 2rem auto;
 }
 
 @media (max-width: 960px) {
-    .hero-building-left,
-    .hero-building-right {
+    .hero-skyline {
         display: none;
     }
 }
 </style>
 
 <div class="hero-wrapper">
-    <!-- Left building caryatid -->
-    <svg class="hero-building-left" viewBox="0 0 250 400" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="currentColor" fill="none" stroke-width="1.5">
-            <!-- Far left background building - Art Deco style -->
-            <g opacity="0.35">
-                <rect x="0" y="150" width="50" height="250" rx="0"/>
-                <line x1="0" y1="180" x2="50" y2="180"/>
-                <line x1="0" y1="220" x2="50" y2="220"/>
-                <line x1="0" y1="260" x2="50" y2="260"/>
-                <line x1="0" y1="300" x2="50" y2="300"/>
-                <line x1="0" y1="340" x2="50" y2="340"/>
-                <line x1="0" y1="380" x2="50" y2="380"/>
-                <!-- Stepped ziggurat top -->
-                <rect x="10" y="130" width="30" height="20"/>
-                <rect x="15" y="115" width="20" height="15"/>
-                <line x1="15" y1="150" x2="15" y2="400"/>
-                <line x1="35" y1="150" x2="35" y2="400"/>
-            </g>
+    <!-- Skyline backdrop -->
+    <svg class="hero-skyline" viewBox="0 0 1200 301" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" stroke-width="1.8">
+            <!-- Ground line -->
+            <line x1="0" y1="300" x2="1200" y2="300" stroke-width="1.8" opacity="0.5"/>
 
-            <!-- Mid-left shorter building with rounded top -->
-            <g opacity="0.45">
-                <rect x="45" y="200" width="40" height="200" rx="0"/>
-                <line x1="45" y1="230" x2="85" y2="230"/>
-                <line x1="45" y1="270" x2="85" y2="270"/>
-                <line x1="45" y1="310" x2="85" y2="310"/>
-                <line x1="45" y1="350" x2="85" y2="350"/>
-                <!-- Wide rounded cap -->
-                <path d="M 40 200 L 40 185 Q 65 175 90 185 L 90 200 Z"/>
-                <circle cx="65" cy="180" r="3" fill="currentColor"/>
-            </g>
+            <!-- LEFT SIDE - Tall Buildings (back to front) -->
 
-            <!-- Background building (right side, behind main tower) - different style -->
+            <!-- Far back left building -->
             <g opacity="0.5">
-                <rect x="180" y="120" width="50" height="280" rx="0"/>
-                <line x1="180" y1="150" x2="230" y2="150"/>
-                <line x1="180" y1="190" x2="230" y2="190"/>
-                <line x1="180" y1="230" x2="230" y2="230"/>
-                <line x1="180" y1="270" x2="230" y2="270"/>
-                <line x1="180" y1="310" x2="230" y2="310"/>
-                <line x1="180" y1="350" x2="230" y2="350"/>
-                <!-- Square crown with antenna -->
-                <rect x="185" y="100" width="40" height="20"/>
-                <rect x="200" y="90" width="10" height="10"/>
-                <line x1="205" y1="90" x2="205" y2="75"/>
-                <circle cx="205" cy="72" r="3" fill="currentColor"/>
-                <!-- Vertical divider -->
-                <line x1="205" y1="120" x2="205" y2="400"/>
+                <rect x="55" y="100" width="45" height="200" rx="0" fill="currentColor" opacity="0.2"/>
+                <rect x="55" y="100" width="45" height="200" rx="0" fill="none"/>
+                <rect x="62" y="85" width="31" height="15" fill="currentColor" opacity="0.2"/>
+                <rect x="62" y="85" width="31" height="15" fill="none"/>
+                <line x1="55" y1="130" x2="100" y2="130"/>
+                <line x1="55" y1="165" x2="100" y2="165"/>
+                <line x1="55" y1="200" x2="100" y2="200"/>
+                <line x1="55" y1="235" x2="100" y2="235"/>
+                <line x1="55" y1="270" x2="100" y2="270"/>
+                <line x1="77" y1="100" x2="77" y2="300"/>
             </g>
 
-            <!-- Far right partial building -->
+            <!-- Middle left building - Art Deco ziggurat -->
+            <g opacity="0.65">
+                <rect x="120" y="120" width="55" height="180" rx="0" fill="currentColor" opacity="0.3"/>
+                <rect x="120" y="120" width="55" height="180" rx="0" fill="none"/>
+                <rect x="127" y="105" width="41" height="15" fill="currentColor" opacity="0.3"/>
+                <rect x="127" y="105" width="41" height="15" fill="none"/>
+                <rect x="135" y="92" width="25" height="13" fill="currentColor" opacity="0.3"/>
+                <rect x="135" y="92" width="25" height="13" fill="none"/>
+                <path d="M 130 120 L 130 105 Q 147 98 165 105 L 165 120 Z" fill="currentColor" opacity="0.3"/>
+                <path d="M 130 120 L 130 105 Q 147 98 165 105 L 165 120 Z" fill="none"/>
+                <circle cx="147" cy="100" r="2.5" fill="currentColor"/>
+                <line x1="120" y1="145" x2="175" y2="145"/>
+                <line x1="120" y1="175" x2="175" y2="175"/>
+                <line x1="120" y1="205" x2="175" y2="205"/>
+                <line x1="120" y1="235" x2="175" y2="235"/>
+                <line x1="120" y1="265" x2="175" y2="265"/>
+                <line x1="147" y1="120" x2="147" y2="300"/>
+            </g>
+
+            <!-- Front left tallest tower -->
+            <g opacity="0.85">
+                <rect x="0" y="40" width="80" height="260" rx="0" fill="currentColor" opacity="0.4"/>
+                <rect x="0" y="40" width="80" height="260" rx="0" fill="none"/>
+                <rect x="10" y="25" width="60" height="15" fill="currentColor" opacity="0.4"/>
+                <rect x="10" y="25" width="60" height="15" fill="none"/>
+                <rect x="25" y="15" width="30" height="10" rx="5" fill="currentColor" opacity="0.4"/>
+                <rect x="25" y="15" width="30" height="10" rx="5" fill="none"/>
+                <circle cx="40" cy="10" r="4" fill="currentColor"/>
+                <line x1="0" y1="70" x2="80" y2="70"/>
+                <line x1="0" y1="100" x2="80" y2="100"/>
+                <line x1="0" y1="130" x2="80" y2="130"/>
+                <line x1="0" y1="160" x2="80" y2="160"/>
+                <line x1="0" y1="190" x2="80" y2="190"/>
+                <line x1="0" y1="220" x2="80" y2="220"/>
+                <line x1="0" y1="250" x2="80" y2="250"/>
+                <line x1="0" y1="280" x2="80" y2="280"/>
+                <line x1="27" y1="40" x2="27" y2="300"/>
+                <line x1="53" y1="40" x2="53" y2="300"/>
+                <rect x="5" y="40" width="3" height="260" fill="currentColor" opacity="0.45"/>
+            </g>
+
+            <!-- CENTER - Smaller Buildings (valley for hero text) -->
+
+            <!-- Center left - medium building -->
+            <g opacity="0.5">
+                <rect x="350" y="185" width="55" height="115" rx="0" fill="currentColor" opacity="0.22"/>
+                <rect x="350" y="185" width="55" height="115" rx="0" fill="none"/>
+                <line x1="350" y1="210" x2="405" y2="210"/>
+                <line x1="350" y1="240" x2="405" y2="240"/>
+                <line x1="350" y1="270" x2="405" y2="270"/>
+                <line x1="377" y1="185" x2="377" y2="300"/>
+            </g>
+
+            <!-- Center left-mid - slim tower -->
             <g opacity="0.4">
-                <rect x="225" y="180" width="25" height="220" rx="0"/>
-                <line x1="225" y1="210" x2="250" y2="210"/>
-                <line x1="225" y1="250" x2="250" y2="250"/>
-                <line x1="225" y1="290" x2="250" y2="290"/>
-                <line x1="225" y1="330" x2="250" y2="330"/>
-                <line x1="225" y1="370" x2="250" y2="370"/>
+                <rect x="425" y="215" width="40" height="85" rx="0" fill="currentColor" opacity="0.18"/>
+                <rect x="425" y="215" width="40" height="85" rx="0" fill="none"/>
+                <rect x="431" y="205" width="28" height="10" rx="5" fill="currentColor" opacity="0.18"/>
+                <rect x="431" y="205" width="28" height="10" rx="5" fill="none"/>
+                <line x1="425" y1="240" x2="465" y2="240"/>
+                <line x1="425" y1="270" x2="465" y2="270"/>
+                <line x1="445" y1="215" x2="445" y2="300"/>
             </g>
 
-            <!-- Main tower structure -->
-            <rect x="90" y="30" width="100" height="370" rx="0"/>
+            <!-- Center middle - tiny rounded building -->
+            <g opacity="0.35">
+                <rect x="485" y="235" width="38" height="65" rx="0" fill="currentColor" opacity="0.16"/>
+                <rect x="485" y="235" width="38" height="65" rx="0" fill="none"/>
+                <path d="M 490 235 L 490 228 Q 504 223 518 228 L 518 235 Z" fill="currentColor" opacity="0.16"/>
+                <path d="M 490 235 L 490 228 Q 504 223 518 228 L 518 235 Z" fill="none"/>
+                <circle cx="504" cy="225" r="2" fill="currentColor"/>
+                <line x1="485" y1="258" x2="523" y2="258"/>
+                <line x1="485" y1="280" x2="523" y2="280"/>
+                <line x1="504" y1="235" x2="504" y2="300"/>
+            </g>
 
-            <!-- Stepped top detail -->
-            <rect x="100" y="15" width="80" height="15"/>
-            <rect x="115" y="5" width="50" height="10" rx="5"/>
-            <circle cx="140" cy="3" r="3" fill="currentColor"/>
+            <!-- Center middle - wide low building -->
+            <g opacity="0.38">
+                <rect x="543" y="240" width="60" height="60" rx="0" fill="currentColor" opacity="0.17"/>
+                <rect x="543" y="240" width="60" height="60" rx="0" fill="none"/>
+                <line x1="543" y1="260" x2="603" y2="260"/>
+                <line x1="543" y1="280" x2="603" y2="280"/>
+                <line x1="563" y1="240" x2="563" y2="300"/>
+                <line x1="583" y1="240" x2="583" y2="300"/>
+            </g>
 
-            <!-- Horizontal window bands -->
-            <line x1="90" y1="60" x2="190" y2="60"/>
-            <line x1="90" y1="90" x2="190" y2="90"/>
-            <line x1="90" y1="120" x2="190" y2="120"/>
-            <line x1="90" y1="150" x2="190" y2="150"/>
-            <line x1="90" y1="180" x2="190" y2="180"/>
-            <line x1="90" y1="210" x2="190" y2="210"/>
-            <line x1="90" y1="240" x2="190" y2="240"/>
-            <line x1="90" y1="270" x2="190" y2="270"/>
-            <line x1="90" y1="300" x2="190" y2="300"/>
-            <line x1="90" y1="330" x2="190" y2="330"/>
-            <line x1="90" y1="360" x2="190" y2="360"/>
+            <!-- Center middle-right - art deco style -->
+            <g opacity="0.42">
+                <rect x="623" y="220" width="50" height="80" rx="0" fill="currentColor" opacity="0.19"/>
+                <rect x="623" y="220" width="50" height="80" rx="0" fill="none"/>
+                <rect x="630" y="210" width="36" height="10" fill="currentColor" opacity="0.19"/>
+                <rect x="630" y="210" width="36" height="10" fill="none"/>
+                <rect x="638" y="202" width="20" height="8" fill="currentColor" opacity="0.19"/>
+                <rect x="638" y="202" width="20" height="8" fill="none"/>
+                <line x1="623" y1="244" x2="673" y2="244"/>
+                <line x1="623" y1="272" x2="673" y2="272"/>
+                <line x1="648" y1="220" x2="648" y2="300"/>
+            </g>
 
-            <!-- Vertical divisions creating window grid -->
-            <line x1="115" y1="30" x2="115" y2="400"/>
-            <line x1="140" y1="30" x2="140" y2="400"/>
-            <line x1="165" y1="30" x2="165" y2="400"/>
+            <!-- Center right-mid - narrow tower -->
+            <g opacity="0.4">
+                <rect x="693" y="210" width="42" height="90" rx="0" fill="currentColor" opacity="0.18"/>
+                <rect x="693" y="210" width="42" height="90" rx="0" fill="none"/>
+                <line x1="693" y1="235" x2="735" y2="235"/>
+                <line x1="693" y1="265" x2="735" y2="265"/>
+                <line x1="714" y1="210" x2="714" y2="300"/>
+            </g>
 
-            <!-- Decorative vertical strips -->
-            <rect x="95" y="30" width="3" height="370" fill="currentColor" opacity="0.3"/>
-            <rect x="182" y="30" width="3" height="370" fill="currentColor" opacity="0.3"/>
+            <!-- Center far right - medium building -->
+            <g opacity="0.47">
+                <rect x="755" y="195" width="55" height="105" rx="0" fill="currentColor" opacity="0.21"/>
+                <rect x="755" y="195" width="55" height="105" rx="0" fill="none"/>
+                <rect x="763" y="185" width="39" height="10" fill="currentColor" opacity="0.21"/>
+                <rect x="763" y="185" width="39" height="10" fill="none"/>
+                <line x1="755" y1="218" x2="810" y2="218"/>
+                <line x1="755" y1="245" x2="810" y2="245"/>
+                <line x1="755" y1="272" x2="810" y2="272"/>
+                <line x1="782" y1="195" x2="782" y2="300"/>
+            </g>
 
-            <!-- Base detail -->
-            <rect x="0" y="395" width="250" height="5" fill="currentColor" opacity="0.2"/>
+            <!-- Train station building - Streamline Moderne style -->
+            <g opacity="0.5">
+                <!-- Main horizontal station building -->
+                <rect x="865" y="220" width="110" height="80" rx="0" fill="currentColor" opacity="0.22"/>
+                <rect x="865" y="220" width="110" height="80" rx="0" fill="none"/>
+
+                <!-- Central tower element -->
+                <rect x="900" y="190" width="40" height="30" fill="currentColor" opacity="0.22"/>
+                <rect x="900" y="190" width="40" height="30" fill="none"/>
+                <rect x="906" y="182" width="28" height="8" rx="4" fill="currentColor" opacity="0.22"/>
+                <rect x="906" y="182" width="28" height="8" rx="4" fill="none"/>
+
+                <!-- Streamline horizontal bands -->
+                <line x1="865" y1="238" x2="975" y2="238"/>
+                <line x1="865" y1="258" x2="975" y2="258"/>
+                <line x1="865" y1="278" x2="975" y2="278"/>
+
+                <!-- Vertical divisions -->
+                <line x1="890" y1="220" x2="890" y2="300"/>
+                <line x1="920" y1="190" x2="920" y2="300"/>
+                <line x1="950" y1="220" x2="950" y2="300"/>
+
+                <!-- Curved corner detail (signature Streamline Moderne) -->
+                <path d="M 975 228 Q 975 220 967 220" fill="none"/>
+
+                <!-- Clock or decorative circle on tower -->
+                <circle cx="920" cy="205" r="7" fill="none"/>
+                <circle cx="920" cy="205" r="4" fill="none"/>
+                <circle cx="920" cy="205" r="1.5" fill="currentColor" opacity="0.3"/>
+            </g>
+
+            <!-- RIGHT SIDE - Tall Buildings (back to front) -->
+
+            <!-- Far back right building -->
+            <g opacity="0.5">
+                <rect x="1085" y="95" width="50" height="205" rx="0" fill="currentColor" opacity="0.2"/>
+                <rect x="1085" y="95" width="50" height="205" rx="0" fill="none"/>
+                <rect x="1093" y="78" width="34" height="17" fill="currentColor" opacity="0.2"/>
+                <rect x="1093" y="78" width="34" height="17" fill="none"/>
+                <line x1="1085" y1="120" x2="1135" y2="120"/>
+                <line x1="1085" y1="155" x2="1135" y2="155"/>
+                <line x1="1085" y1="190" x2="1135" y2="190"/>
+                <line x1="1085" y1="225" x2="1135" y2="225"/>
+                <line x1="1085" y1="260" x2="1135" y2="260"/>
+                <line x1="1110" y1="95" x2="1110" y2="300"/>
+            </g>
+
+            <!-- Middle right building with porthole -->
+            <g opacity="0.65">
+                <rect x="1025" y="110" width="70" height="190" rx="0" fill="currentColor" opacity="0.3"/>
+                <rect x="1025" y="110" width="70" height="190" rx="0" fill="none"/>
+                <rect x="1033" y="93" width="54" height="17" fill="currentColor" opacity="0.3"/>
+                <rect x="1033" y="93" width="54" height="17" fill="none"/>
+                <rect x="1042" y="78" width="36" height="15" rx="7" fill="currentColor" opacity="0.3"/>
+                <rect x="1042" y="78" width="36" height="15" rx="7" fill="none"/>
+                <line x1="1025" y1="140" x2="1095" y2="140"/>
+                <line x1="1025" y1="175" x2="1095" y2="175"/>
+                <line x1="1025" y1="210" x2="1095" y2="210"/>
+                <line x1="1025" y1="245" x2="1095" y2="245"/>
+                <line x1="1025" y1="280" x2="1095" y2="280"/>
+                <line x1="1045" y1="110" x2="1045" y2="300"/>
+                <line x1="1075" y1="110" x2="1075" y2="300"/>
+                <!-- Porthole -->
+                <circle cx="1060" cy="200" r="20" fill="currentColor" opacity="0.2"/>
+                <circle cx="1060" cy="200" r="20" fill="none"/>
+                <circle cx="1060" cy="200" r="12" fill="none"/>
+                <circle cx="1060" cy="200" r="5" fill="currentColor" opacity="0.35"/>
+            </g>
+
+            <!-- Front right tallest building -->
+            <g opacity="0.85">
+                <rect x="1125" y="50" width="75" height="250" rx="0" fill="currentColor" opacity="0.4"/>
+                <rect x="1125" y="50" width="75" height="250" rx="0" fill="none"/>
+                <rect x="1135" y="35" width="55" height="15" fill="currentColor" opacity="0.4"/>
+                <rect x="1135" y="35" width="55" height="15" fill="none"/>
+                <rect x="1145" y="25" width="35" height="10" rx="5" fill="currentColor" opacity="0.4"/>
+                <rect x="1145" y="25" width="35" height="10" rx="5" fill="none"/>
+                <circle cx="1162" cy="20" r="4" fill="currentColor"/>
+                <line x1="1125" y1="80" x2="1200" y2="80"/>
+                <line x1="1125" y1="110" x2="1200" y2="110"/>
+                <line x1="1125" y1="140" x2="1200" y2="140"/>
+                <line x1="1125" y1="170" x2="1200" y2="170"/>
+                <line x1="1125" y1="200" x2="1200" y2="200"/>
+                <line x1="1125" y1="230" x2="1200" y2="230"/>
+                <line x1="1125" y1="260" x2="1200" y2="260"/>
+                <line x1="1125" y1="290" x2="1200" y2="290"/>
+                <line x1="1150" y1="50" x2="1150" y2="300"/>
+                <line x1="1175" y1="50" x2="1175" y2="300"/>
+                <rect x="1192" y="50" width="3" height="250" fill="currentColor" opacity="0.45"/>
+            </g>
+
         </g>
     </svg>
+
     <!-- Center hero content -->
     <div class="hero-content">
         <h1>Authmoderne</h1>
@@ -154,115 +295,7 @@ hide:
         </p>
     </div>
 
-    <!-- Right building caryatid -->
-    <svg class="hero-building-right" viewBox="0 0 280 400" xmlns="http://www.w3.org/2000/svg">
-        <g stroke="currentColor" fill="none" stroke-width="1.5">
-            <!-- Far left partial building - slim tower -->
-            <g opacity="0.35">
-                <rect x="0" y="170" width="30" height="230" rx="0"/>
-                <line x1="0" y1="200" x2="30" y2="200"/>
-                <line x1="0" y1="240" x2="30" y2="240"/>
-                <line x1="0" y1="280" x2="30" y2="280"/>
-                <line x1="0" y1="320" x2="30" y2="320"/>
-                <line x1="0" y1="360" x2="30" y2="360"/>
-                <rect x="5" y="155" width="20" height="15" rx="7"/>
-            </g>
-
-            <!-- Left background tower - taller with horizontal emphasis -->
-            <g opacity="0.45">
-                <rect x="25" y="100" width="45" height="300" rx="0"/>
-                <line x1="25" y1="130" x2="70" y2="130"/>
-                <line x1="25" y1="170" x2="70" y2="170"/>
-                <line x1="25" y1="210" x2="70" y2="210"/>
-                <line x1="25" y1="250" x2="70" y2="250"/>
-                <line x1="25" y1="290" x2="70" y2="290"/>
-                <line x1="25" y1="330" x2="70" y2="330"/>
-                <line x1="25" y1="370" x2="70" y2="370"/>
-                <!-- Flat rectangular top -->
-                <rect x="30" y="80" width="35" height="20"/>
-                <rect x="37" y="70" width="21" height="10"/>
-                <line x1="47" y1="100" x2="47" y2="400"/>
-            </g>
-
-            <!-- Right background - wide low building -->
-            <g opacity="0.4">
-                <rect x="225" y="190" width="55" height="210" rx="0"/>
-                <line x1="225" y1="220" x2="280" y2="220"/>
-                <line x1="225" y1="260" x2="280" y2="260"/>
-                <line x1="225" y1="300" x2="280" y2="300"/>
-                <line x1="225" y1="340" x2="280" y2="340"/>
-                <line x1="225" y1="380" x2="280" y2="380"/>
-                <!-- Curved top element -->
-                <path d="M 230 190 L 230 180 Q 252 170 275 180 L 275 190" fill="none"/>
-                <line x1="245" y1="190" x2="245" y2="400"/>
-                <line x1="260" y1="190" x2="260" y2="400"/>
-            </g>
-
-            <!-- Far right edge building -->
-            <g opacity="0.35">
-                <rect x="270" y="230" width="10" height="170" rx="0"/>
-                <line x1="270" y1="260" x2="280" y2="260"/>
-                <line x1="270" y1="300" x2="280" y2="300"/>
-                <line x1="270" y1="340" x2="280" y2="340"/>
-                <line x1="270" y1="380" x2="280" y2="380"/>
-            </g>
-
-            <!-- Wide horizontal base structure -->
-            <rect x="70" y="70" width="160" height="330" rx="0"/>
-
-            <!-- Curved corner detail (signature Streamline Moderne) -->
-            <path d="M 230 90 Q 230 70 210 70" fill="none"/>
-
-            <!-- Stepped tower element -->
-            <rect x="120" y="30" width="70" height="40"/>
-            <rect x="135" y="15" width="40" height="15" rx="7"/>
-            <circle cx="155" cy="10" r="4" fill="currentColor"/>
-
-            <!-- Horizontal bands emphasizing width -->
-            <line x1="70" y1="100" x2="230" y2="100"/>
-            <line x1="70" y1="130" x2="230" y2="130"/>
-            <line x1="70" y1="160" x2="230" y2="160"/>
-            <line x1="70" y1="190" x2="230" y2="190"/>
-            <line x1="70" y1="220" x2="230" y2="220"/>
-            <line x1="70" y1="250" x2="230" y2="250"/>
-            <line x1="70" y1="280" x2="230" y2="280"/>
-            <line x1="70" y1="310" x2="230" y2="310"/>
-            <line x1="70" y1="340" x2="230" y2="340"/>
-            <line x1="70" y1="370" x2="230" y2="370"/>
-
-            <!-- Vertical window strips -->
-            <line x1="110" y1="70" x2="110" y2="400"/>
-            <line x1="155" y1="30" x2="155" y2="400"/>
-            <line x1="200" y1="70" x2="200" y2="400"/>
-
-            <!-- Circular porthole window with details -->
-            <circle cx="155" cy="220" r="35"/>
-            <circle cx="155" cy="220" r="26"/>
-            <circle cx="155" cy="220" r="17"/>
-            <circle cx="155" cy="220" r="8" fill="currentColor" opacity="0.3"/>
-
-            <!-- Porthole cross divisions -->
-            <line x1="155" y1="185" x2="155" y2="255" opacity="0.5"/>
-            <line x1="120" y1="220" x2="190" y2="220" opacity="0.5"/>
-
-            <!-- Decorative speed lines on right -->
-            <line x1="210" y1="90" x2="225" y2="90" stroke-width="2"/>
-            <line x1="210" y1="150" x2="225" y2="150" stroke-width="2"/>
-            <line x1="210" y1="260" x2="225" y2="260" stroke-width="2"/>
-            <line x1="210" y1="320" x2="225" y2="320" stroke-width="2"/>
-
-            <!-- Base platform -->
-            <rect x="0" y="395" width="280" height="5" fill="currentColor" opacity="0.2"/>
-
-            <!-- Vertical accent strips -->
-            <rect x="75" y="70" width="3" height="330" fill="currentColor" opacity="0.3"/>
-            <rect x="222" y="70" width="3" height="330" fill="currentColor" opacity="0.3"/>
-        </g>
-    </svg>
-
 </div>
-
----
 
 ## Features
 
@@ -383,13 +416,5 @@ Just like the Art Deco movement emphasized sleek, horizontal lines and minimal o
     Authmoderne is open source under the MIT License
 
     [:octicons-arrow-right-24: MIT License](https://github.com/frankie567/authmoderne/blob/master/LICENSE)
-
-</div>
-
----
-
-<div style="text-align: center; margin: 3rem 0; opacity: 0.7;" markdown>
-
-Made with :material-train-variant: by the Authmoderne team
 
 </div>

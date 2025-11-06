@@ -41,9 +41,10 @@ dev = [
     "ruff",
     "pytest",
     "pytest-cov",
-    "mkdocs-material",
-    "mkdocstrings[python]",
     "trio",
+    "sqlalchemy[asyncio]",
+    "aiosqlite",
+    "zensical",
 ]
 
 [tool.ruff]
