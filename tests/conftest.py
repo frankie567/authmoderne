@@ -9,11 +9,20 @@ class MockStorage(StorageProtocol):
     def __init__(self) -> None:
         self._data: dict[typing.Any, dict[str, typing.Any]] = {}
 
-    async def get_by_id[Model](self, model: type[Model], id: typing.Any) -> Model:
+    async def get_one_by_id[Model](self, model: type[Model], id: typing.Any) -> Model:
         try:
             return self._get_model_mapping(model)[id]
         except KeyError as e:
             raise DoesNotExist() from e
+
+    async def get_one_by[Model](
+        self, model: type[Model], **filters: typing.Any
+    ) -> Model:
+        model_mapping = self._get_model_mapping(model)
+        for obj in model_mapping.values():
+            if all(getattr(obj, key) == value for key, value in filters.items()):
+                return obj
+        raise DoesNotExist()
 
     async def create[Model](self, model: type[Model], object: Model) -> Model:
         model_mapping = self._get_model_mapping(model)

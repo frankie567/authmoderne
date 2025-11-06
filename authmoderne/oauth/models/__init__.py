@@ -1,3 +1,11 @@
-from .base import OAuthClientProtocol
+from .base import (
+    OAuthAuthorizationCodeProtocol,
+    OAuthClientProtocol,
+    OAuthGrantProtocol,
+)
 
-__all__ = ["OAuthClientProtocol"]
+__all__ = [
+    "OAuthClientProtocol",
+    "OAuthGrantProtocol",
+    "OAuthAuthorizationCodeProtocol",
+]
