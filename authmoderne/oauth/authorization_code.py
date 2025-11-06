@@ -162,8 +162,8 @@ class AuthorizationCodeGrant:
             raise AuthorizationCodeGrantRedirectionError(error="invalid_request") from e
 
         try:
-            client = await self.storage.get_one_by_id(
-                self.oauth_client_model, id=request.client_id
+            client = await self.storage.get_one_by(
+                self.oauth_client_model, client_id=request.client_id
             )
         except DoesNotExist as e:
             raise MissingOrInvalidClientIDError() from e
@@ -187,7 +187,8 @@ class AuthorizationCodeGrant:
             code, code_hash = generate_token_hash_pair(
                 self.code_hash_key, prefix=self.code_prefix
             )
-            authorization_code = self.oauth_authorization_code_model(
+            authorization_code = await self.storage.create(
+                self.oauth_authorization_code_model,
                 code=code_hash,
                 client_id=client.client_id,
                 subject_id=subject.id,
@@ -197,9 +198,6 @@ class AuthorizationCodeGrant:
                 scope=request.scope,
                 code_challenge=request.code_challenge,
                 code_challenge_method=request.code_challenge_method,
-            )
-            await self.storage.create(
-                self.oauth_authorization_code_model, authorization_code
             )
             return AuthorizationCodeGrantGrantedResponse(
                 subject=subject,

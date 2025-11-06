@@ -7,32 +7,26 @@ from authmoderne.storage import DoesNotExist, StorageProtocol
 
 class MockStorage(StorageProtocol):
     def __init__(self) -> None:
-        self._data: dict[typing.Any, dict[str, typing.Any]] = {}
-
-    async def get_one_by_id[Model](self, model: type[Model], id: typing.Any) -> Model:
-        try:
-            return self._get_model_mapping(model)[id]
-        except KeyError as e:
-            raise DoesNotExist() from e
+        self._data: dict[typing.Any, list[typing.Any]] = {}
 
     async def get_one_by[Model](
         self, model: type[Model], **filters: typing.Any
     ) -> Model:
-        model_mapping = self._get_model_mapping(model)
-        for obj in model_mapping.values():
+        objects = self._get_model_objects(model)
+        for obj in objects:
             if all(getattr(obj, key) == value for key, value in filters.items()):
                 return obj
         raise DoesNotExist()
 
-    async def create[Model](self, model: type[Model], object: Model) -> Model:
-        model_mapping = self._get_model_mapping(model)
-        object_id = getattr(object, "id")
-        model_mapping[object_id] = object
-        return object
+    async def create[Model](self, model: type[Model], **data: typing.Any) -> Model:
+        objects = self._get_model_objects(model)
+        obj = model(**data)
+        objects.append(obj)
+        return obj
 
-    def _get_model_mapping[Model](self, model: type[Model]) -> dict[str, Model]:
+    def _get_model_objects[Model](self, model: type[Model]) -> list[Model]:
         if model not in self._data:
-            self._data[model] = {}
+            self._data[model] = []
         return self._data[model]
 
 

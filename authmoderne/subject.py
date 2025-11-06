@@ -1,8 +1,8 @@
 import typing
 
 
-class Subject[SubjectID](typing.Protocol):
-    id: SubjectID
+class Subject(typing.Protocol):
+    id: typing.Any
 
 
 __all__ = ["Subject"]

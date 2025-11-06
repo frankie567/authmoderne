@@ -13,23 +13,18 @@ from authmoderne.oauth.authorization_code import (
     MissingOrInvalidClientIDError,
     UnauthenticatedSubjectError,
 )
-from authmoderne.oauth.models import (
-    OAuthAuthorizationCodeProtocol,
-    OAuthClientProtocol,
-    OAuthGrantProtocol,
-)
 from authmoderne.oauth.types import CodeChallengeMethod
 from authmoderne.subject import Subject
 from tests.conftest import MockStorage
 
 
 @dataclasses.dataclass
-class MockUser(Subject[str]):
+class MockUser(Subject):
     id: str
 
 
 @dataclasses.dataclass
-class MockOAuthClient(OAuthClientProtocol):
+class MockOAuthClient:
     client_id: str
 
     @property
@@ -38,7 +33,7 @@ class MockOAuthClient(OAuthClientProtocol):
 
 
 @dataclasses.dataclass
-class MockOAuthGrant(OAuthGrantProtocol[str]):
+class MockOAuthGrant:
     client_id: str
     subject_id: str
     granted_at: datetime
@@ -50,7 +45,7 @@ class MockOAuthGrant(OAuthGrantProtocol[str]):
 
 
 @dataclasses.dataclass
-class MockOAuthAuthorizationCode(OAuthAuthorizationCodeProtocol[str]):
+class MockOAuthAuthorizationCode:
     code: str
     client_id: str
     subject_id: str
@@ -73,9 +68,7 @@ def subject() -> MockUser:
 
 @pytest.fixture
 async def oauth_client(mock_storage: MockStorage) -> MockOAuthClient:
-    return await mock_storage.create(
-        MockOAuthClient, MockOAuthClient(client_id="CLIENT_ID")
-    )
+    return await mock_storage.create(MockOAuthClient, client_id="CLIENT_ID")
 
 
 @pytest.fixture
@@ -84,12 +77,10 @@ async def oauth_grant(
 ) -> MockOAuthGrant:
     return await mock_storage.create(
         MockOAuthGrant,
-        MockOAuthGrant(
-            client_id=oauth_client.client_id,
-            subject_id=subject.id,
-            granted_at=datetime.now(UTC),
-            scope="read write",
-        ),
+        client_id=oauth_client.client_id,
+        subject_id=subject.id,
+        granted_at=datetime.now(UTC),
+        scope="read write",
     )
 
 
