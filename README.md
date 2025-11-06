@@ -60,7 +60,7 @@ When you push the tag on GitHub, the workflow will automatically publish it on P
 
 ## Serve the documentation
 
-You can serve the Mkdocs documentation with:
+You can serve the Zensical documentation with:
 
 ```bash
 just docs-serve
