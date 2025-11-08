@@ -12,6 +12,9 @@ class Authmoderne:
     def __call__(self) -> "AuthmoderneRequest":
         return AuthmoderneRequest(self._container)
 
+    async def close(self) -> None:
+        await self._container.close()
+
 
 class AuthmoderneRequest:
     def __init__(self, container: dishka.AsyncContainer) -> None:

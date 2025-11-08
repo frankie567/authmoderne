@@ -53,6 +53,7 @@ dev = [
     "sqlalchemy[asyncio]",
     "aiosqlite",
     "httpx",
+    "asgi-lifespan",
 ]
 
 [tool.ruff]

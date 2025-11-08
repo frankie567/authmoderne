@@ -1,6 +1,7 @@
 from asgiref.typing import (
     ASGI3Application,
     ASGIReceiveCallable,
+    ASGIReceiveEvent,
     ASGISendCallable,
     Scope,
 )
@@ -16,9 +17,15 @@ class AuthmoderneMiddleware:
     async def __call__(
         self, scope: Scope, receive: ASGIReceiveCallable, send: ASGISendCallable
     ) -> None:
-        if scope["type"] not in {"http", "websocket"}:
-            await self.app(scope, receive, send)
-            return
+        if scope["type"] == "lifespan":
+
+            async def receive_lifespan() -> ASGIReceiveEvent:
+                message = await receive()
+                if message["type"] == "lifespan.shutdown":
+                    await self.authmoderne.close()
+                return message
+
+            return await self.app(scope, receive_lifespan, send)
 
         async with self.authmoderne() as authmoderne_request:
             state = scope.get("state", {})

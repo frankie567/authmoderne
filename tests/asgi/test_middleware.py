@@ -1,5 +1,6 @@
 import httpx
 import pytest
+from asgi_lifespan import LifespanManager
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
 from starlette.requests import Request
@@ -30,9 +31,10 @@ app = Starlette(
 
 @pytest.mark.anyio
 async def test_middleware() -> None:
-    async with httpx.AsyncClient(
-        transport=httpx.ASGITransport(app), base_url="http://testserver"
-    ) as client:
-        response = await client.get("/")
-        assert response.status_code == 200
-        assert response.text == "OK"
+    async with LifespanManager(app):
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(app), base_url="http://testserver"
+        ) as client:
+            response = await client.get("/")
+            assert response.status_code == 200
+            assert response.text == "OK"
