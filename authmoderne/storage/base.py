@@ -1,5 +1,7 @@
 import typing
 
+import dishka
+
 from ..exceptions import AuthmoderneException
 
 
@@ -46,3 +48,7 @@ class StorageProtocol(typing.Protocol):
             The created object.
         """
         ...
+
+
+class StorageProvider(dishka.Provider):
+    """Base class for storage providers."""

@@ -103,7 +103,7 @@ class TestAuthorizationCodeGrantValidateRequest:
         payload = {"response_type": "code"}
 
         with pytest.raises(UnauthenticatedSubjectError):
-            await authorization_code_grant.validate_request(None, payload)
+            await authorization_code_grant(None, payload)
 
     @pytest.mark.parametrize(
         "payload",
@@ -139,7 +139,7 @@ class TestAuthorizationCodeGrantValidateRequest:
         authorization_code_grant: AuthorizationCodeGrant,
     ) -> None:
         with pytest.raises(AuthorizationCodeGrantRedirectionError) as exc_info:
-            await authorization_code_grant.validate_request(subject, payload)
+            await authorization_code_grant(subject, payload)
 
         assert exc_info.value.error == "invalid_request"
 
@@ -149,7 +149,7 @@ class TestAuthorizationCodeGrantValidateRequest:
         payload = {"response_type": "code"}
 
         with pytest.raises(MissingOrInvalidClientIDError):
-            await authorization_code_grant.validate_request(subject, payload)
+            await authorization_code_grant(subject, payload)
 
     async def test_invalid_client(
         self, subject: MockUser, authorization_code_grant: AuthorizationCodeGrant
@@ -162,7 +162,7 @@ class TestAuthorizationCodeGrantValidateRequest:
         }
 
         with pytest.raises(MissingOrInvalidClientIDError):
-            await authorization_code_grant.validate_request(subject, payload)
+            await authorization_code_grant(subject, payload)
 
     async def test_not_granted(
         self,
@@ -177,7 +177,7 @@ class TestAuthorizationCodeGrantValidateRequest:
             "code_challenge_method": "plain",
         }
 
-        response = await authorization_code_grant.validate_request(subject, payload)
+        response = await authorization_code_grant(subject, payload)
 
         assert isinstance(response, AuthorizationCodeGrantConsentResponse)
         assert response.client == oauth_client
@@ -196,7 +196,7 @@ class TestAuthorizationCodeGrantValidateRequest:
             "code_challenge_method": "plain",
         }
 
-        response = await authorization_code_grant.validate_request(subject, payload)
+        response = await authorization_code_grant(subject, payload)
 
         assert isinstance(response, AuthorizationCodeGrantGrantedResponse)
         assert response.client == oauth_client

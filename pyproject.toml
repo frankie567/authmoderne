@@ -14,12 +14,19 @@ classifiers = [
 requires-python = ">=3.13"
 dependencies = [
     "anyio",
+    "dishka",
     "pydantic>=2.0.0",
 ]
 
 [project.optional-dependencies]
 sqlalchemy = [
     "sqlalchemy>=2.0.0"
+]
+asgi = [
+    "asgiref",
+]
+starlette = [
+    "starlette>=0.50.0",
 ]
 
 [project.urls]
@@ -42,9 +49,10 @@ dev = [
     "pytest",
     "pytest-cov",
     "trio",
+    "zensical",
     "sqlalchemy[asyncio]",
     "aiosqlite",
-    "zensical",
+    "httpx",
 ]
 
 [tool.ruff]
@@ -55,7 +63,6 @@ extend-select = ["I", "TRY", "UP"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=authmoderne/ --cov-report=term-missing"
-
 
 [tool.uv]
 default-groups = ["dev"]

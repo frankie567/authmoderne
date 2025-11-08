@@ -1,10 +1,17 @@
 import typing
+from collections.abc import AsyncIterable
 
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+import dishka
+from sqlalchemy import URL, select
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from sqlalchemy.orm import DeclarativeBase
 
-from .base import DoesNotExist, StorageProtocol
+from .base import DoesNotExist, StorageProtocol, StorageProvider
 
 
 class Base(DeclarativeBase):
@@ -32,4 +39,43 @@ class SQLAlchemyStorage(StorageProtocol):
         return object
 
 
-__all__ = ["SQLAlchemyStorage", "Base"]
+class SQLAlchemyEngineProvider(StorageProvider):
+    def __init__(self, url: str | URL) -> None:
+        super().__init__()
+        self.url = url
+
+    @dishka.provide(scope=dishka.Scope.APP)
+    async def get_engine(self) -> AsyncIterable[AsyncEngine]:
+        engine = create_async_engine(self.url)
+        yield engine
+        await engine.dispose()
+
+    @dishka.provide(scope=dishka.Scope.APP)
+    async def get_sessionmaker(
+        self, engine: AsyncEngine
+    ) -> async_sessionmaker[AsyncSession]:
+        return async_sessionmaker(engine, expire_on_commit=False)
+
+    @dishka.provide(scope=dishka.Scope.REQUEST)
+    async def get_session(
+        self, sessionmaker: async_sessionmaker[AsyncSession]
+    ) -> AsyncIterable[AsyncSession]:
+        async with sessionmaker() as session:
+            try:
+                yield session
+            except:
+                await session.rollback()
+                raise
+            else:
+                await session.commit()
+
+    @dishka.provide(scope=dishka.Scope.REQUEST)
+    async def get_storage(self, session: AsyncSession) -> SQLAlchemyStorage:
+        return SQLAlchemyStorage(session)
+
+
+__all__ = [
+    "Base",
+    "SQLAlchemyStorage",
+    "SQLAlchemyEngineProvider",
+]

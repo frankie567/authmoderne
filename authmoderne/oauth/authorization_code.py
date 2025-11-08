@@ -1,6 +1,7 @@
 import typing
 from datetime import UTC, datetime, timedelta
 
+import dishka
 from pydantic import AnyUrl, BaseModel, Field, HttpUrl, ValidationError
 
 from authmoderne.crypto import generate_token_hash_pair
@@ -124,6 +125,9 @@ class AuthorizationCodeGrantGrantedResponse[S: Subject]:
         self.authorization_code = authorization_code
 
 
+_DEFAULT_CODE_PREFIX = "am_code_"
+
+
 class AuthorizationCodeGrant:
     def __init__(
         self,
@@ -132,7 +136,7 @@ class AuthorizationCodeGrant:
         oauth_grant_model: type[OAuthGrantProtocol],
         oauth_authorization_code_model: type[OAuthAuthorizationCodeProtocol],
         code_hash_key: str,
-        code_prefix: str = "am_code_",
+        code_prefix: str = _DEFAULT_CODE_PREFIX,
     ) -> None:
         self.storage = storage
         self.oauth_client_model = oauth_client_model
@@ -141,7 +145,7 @@ class AuthorizationCodeGrant:
         self.code_hash_key = code_hash_key
         self.code_prefix = code_prefix
 
-    async def validate_request[S: Subject](
+    async def __call__[S: Subject](
         self, subject: S | None, payload: dict[str, typing.Any]
     ) -> (
         AuthorizationCodeGrantConsentResponse[S]
@@ -205,3 +209,33 @@ class AuthorizationCodeGrant:
                 code=code,
                 authorization_code=authorization_code,
             )
+
+
+class AuthorizationCodeGrantProvider(dishka.Provider):
+    def __init__(
+        self,
+        oauth_client_model: type[OAuthClientProtocol],
+        oauth_grant_model: type[OAuthGrantProtocol],
+        oauth_authorization_code_model: type[OAuthAuthorizationCodeProtocol],
+        code_hash_key: str,
+        code_prefix: str = _DEFAULT_CODE_PREFIX,
+    ) -> None:
+        super().__init__()
+        self.oauth_client_model = oauth_client_model
+        self.oauth_grant_model = oauth_grant_model
+        self.oauth_authorization_code_model = oauth_authorization_code_model
+        self.code_hash_key = code_hash_key
+        self.code_prefix = code_prefix
+
+    @dishka.provide(scope=dishka.Scope.REQUEST)
+    def get_authorization_code_grant(
+        self, storage: StorageProtocol
+    ) -> AuthorizationCodeGrant:
+        return AuthorizationCodeGrant(
+            storage=storage,
+            oauth_client_model=self.oauth_client_model,
+            oauth_grant_model=self.oauth_grant_model,
+            oauth_authorization_code_model=self.oauth_authorization_code_model,
+            code_hash_key=self.code_hash_key,
+            code_prefix=self.code_prefix,
+        )

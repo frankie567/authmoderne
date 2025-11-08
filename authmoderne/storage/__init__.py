@@ -1,3 +1,7 @@
-from .base import DoesNotExist, StorageProtocol
+from .base import DoesNotExist, StorageProtocol, StorageProvider
 
-__all__ = ["StorageProtocol", "DoesNotExist"]
+__all__ = [
+    "DoesNotExist",
+    "StorageProtocol",
+    "StorageProvider",
+]

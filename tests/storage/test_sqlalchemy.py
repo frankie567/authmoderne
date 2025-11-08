@@ -1,12 +1,22 @@
 from collections.abc import AsyncGenerator
 
+import dishka
 import pytest
 from sqlalchemy import String
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from authmoderne.storage.base import DoesNotExist
-from authmoderne.storage.sqlalchemy import Base, SQLAlchemyStorage
+from authmoderne.storage.sqlalchemy import (
+    Base,
+    SQLAlchemyEngineProvider,
+    SQLAlchemyStorage,
+)
 
 
 class Model(Base):
@@ -50,3 +60,24 @@ async def test_sqlalchemy_storage(
     # Attempt to retrieve a non-existent model instance
     with pytest.raises(DoesNotExist):
         await sqlalchemy_storage.get_one_by(Model, name="Non-Existent Model")
+
+
+@pytest.mark.parametrize("anyio_backend", ["asyncio"])
+async def test_engine_provider(anyio_backend: str) -> None:
+    container = dishka.make_async_container(
+        SQLAlchemyEngineProvider("sqlite+aiosqlite:///:memory:")
+    )
+
+    engine = await container.get(AsyncEngine)
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+
+    async with container() as request_container:
+        sqlalchemy_storage = await request_container.get(SQLAlchemyStorage)
+        assert isinstance(sqlalchemy_storage, SQLAlchemyStorage)
+
+        model_instance = await sqlalchemy_storage.create(Model, name="Test Model")
+        assert model_instance.id is not None
+        assert model_instance.name == "Test Model"
+
+    await container.close()

@@ -1,8 +1,9 @@
 import typing
 
+import dishka
 import pytest
 
-from authmoderne.storage import DoesNotExist, StorageProtocol
+from authmoderne.storage import DoesNotExist, StorageProtocol, StorageProvider
 
 
 class MockStorage(StorageProtocol):
@@ -28,6 +29,16 @@ class MockStorage(StorageProtocol):
         if model not in self._data:
             self._data[model] = []
         return self._data[model]
+
+
+class MockStorageProvider(StorageProvider):
+    def __init__(self) -> None:
+        super().__init__()
+        self.storage = MockStorage()
+
+    @dishka.provide(scope=dishka.Scope.REQUEST)
+    async def get_storage(self) -> StorageProtocol:
+        return self.storage
 
 
 @pytest.fixture
