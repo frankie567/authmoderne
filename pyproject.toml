@@ -60,7 +60,7 @@ dev = [
 target-version = "py313"
 
 [tool.ruff.lint]
-extend-select = ["I", "TRY", "UP"]
+extend-select = ["I", "TRY", "UP", "T201"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=authmoderne/ --cov-report=term-missing"

@@ -67,7 +67,7 @@ async def test_sqlalchemy_storage(
 @pytest.mark.parametrize("anyio_backend", ["asyncio"])
 async def test_engine_provider(anyio_backend: str) -> None:
     container = dishka.make_async_container(
-        SQLAlchemyEngineProvider("sqlite+aiosqlite:///:memory:", {Model})
+        SQLAlchemyEngineProvider("sqlite+aiosqlite:///:memory:")
     )
 
     engine = await container.get(AsyncEngine)

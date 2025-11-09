@@ -39,7 +39,9 @@ class SQLAlchemyStorage[Model](StorageProtocol[Model]):
 
 
 class SQLAlchemyEngineProvider(StorageProvider):
-    def __init__[Model](self, url: str | URL, models: Iterable[type[Model]]) -> None:
+    def __init__[Model](
+        self, url: str | URL, models: Iterable[type[Model]] | None = None
+    ) -> None:
         super().__init__(models=models)
         self.url = url
 
@@ -68,10 +70,11 @@ class SQLAlchemyEngineProvider(StorageProvider):
             else:
                 await session.commit()
 
-    def _get_storage_factory[Model](
-        self, model: type[Model]
-    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
-        async def _get_storage(
+    def _get_storage_factory(
+        self,
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[typing.Any]]]:
+        async def _get_storage[Model](
+            model: type[Model],
             session: AsyncSession,
         ) -> StorageProtocol[Model]:
             return SQLAlchemyStorage[Model](model, session)

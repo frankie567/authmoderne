@@ -1,4 +1,5 @@
 import contextlib
+from collections.abc import Iterable
 
 import dishka
 
@@ -6,8 +7,12 @@ from .storage import StorageProtocol, StorageProvider
 
 
 class Authmoderne:
-    def __init__(self, storage_provider: StorageProvider) -> None:
-        self._container = dishka.make_async_container(storage_provider)
+    def __init__(
+        self,
+        storage: StorageProvider | Iterable[StorageProvider],
+    ) -> None:
+        storages = [storage] if isinstance(storage, StorageProvider) else storage
+        self._container = dishka.make_async_container(*storages)
 
     def __call__(self) -> "AuthmoderneRequest":
         return AuthmoderneRequest(self._container)
