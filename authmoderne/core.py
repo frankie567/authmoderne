@@ -36,8 +36,8 @@ class AuthmoderneRequest:
     ) -> None:
         await self._exit_stack.aclose()
 
-    async def get_storage(self) -> StorageProtocol:
-        return await self.request_container.get(StorageProtocol)
+    async def get_storage[Model](self, model: type[Model]) -> StorageProtocol[Model]:
+        return await self.request_container.get(StorageProtocol[model])  # type: ignore[valid-type]
 
     @property
     def request_container(self) -> dishka.AsyncContainer:

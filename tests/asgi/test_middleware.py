@@ -9,7 +9,7 @@ from starlette.routing import Route
 
 from authmoderne.core import Authmoderne, AuthmoderneRequest
 from authmoderne.integrations.asgi import AuthmoderneMiddleware
-from tests.conftest import MockStorageProvider
+from tests.conftest import MockModel, MockStorageProvider
 
 
 async def endpoint(request: Request) -> Response:
@@ -20,7 +20,7 @@ async def endpoint(request: Request) -> Response:
     return Response("OK")
 
 
-authmoderne = Authmoderne(MockStorageProvider())
+authmoderne = Authmoderne(MockStorageProvider({MockModel}, {}))
 
 
 app = Starlette(

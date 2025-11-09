@@ -1,7 +1,6 @@
 import typing
 from datetime import UTC, datetime, timedelta
 
-import dishka
 from pydantic import AnyUrl, BaseModel, Field, HttpUrl, ValidationError
 
 from authmoderne.crypto import generate_token_hash_pair
@@ -131,17 +130,17 @@ _DEFAULT_CODE_PREFIX = "am_code_"
 class AuthorizationCodeGrant:
     def __init__(
         self,
-        storage: StorageProtocol,
-        oauth_client_model: type[OAuthClientProtocol],
-        oauth_grant_model: type[OAuthGrantProtocol],
-        oauth_authorization_code_model: type[OAuthAuthorizationCodeProtocol],
+        oauth_client_storage: StorageProtocol[OAuthClientProtocol],
+        oauth_grant_storage: StorageProtocol[OAuthGrantProtocol],
+        oauth_authorization_code_storage: StorageProtocol[
+            OAuthAuthorizationCodeProtocol
+        ],
         code_hash_key: str,
         code_prefix: str = _DEFAULT_CODE_PREFIX,
     ) -> None:
-        self.storage = storage
-        self.oauth_client_model = oauth_client_model
-        self.oauth_grant_model = oauth_grant_model
-        self.oauth_authorization_code_model = oauth_authorization_code_model
+        self.oauth_client_storage = oauth_client_storage
+        self.oauth_grant_storage = oauth_grant_storage
+        self.oauth_authorization_code_storage = oauth_authorization_code_storage
         self.code_hash_key = code_hash_key
         self.code_prefix = code_prefix
 
@@ -166,17 +165,15 @@ class AuthorizationCodeGrant:
             raise AuthorizationCodeGrantRedirectionError(error="invalid_request") from e
 
         try:
-            client = await self.storage.get_one_by(
-                self.oauth_client_model, client_id=request.client_id
+            client = await self.oauth_client_storage.get_one_by(
+                client_id=request.client_id
             )
         except DoesNotExist as e:
             raise MissingOrInvalidClientIDError() from e
 
         try:
-            _ = await self.storage.get_one_by(
-                self.oauth_grant_model,
-                client_id=client.client_id,
-                subject_id=subject.id,
+            _ = await self.oauth_grant_storage.get_one_by(
+                client_id=client.client_id, subject_id=subject.id
             )
         except DoesNotExist:
             return AuthorizationCodeGrantConsentResponse(
@@ -191,8 +188,7 @@ class AuthorizationCodeGrant:
             code, code_hash = generate_token_hash_pair(
                 self.code_hash_key, prefix=self.code_prefix
             )
-            authorization_code = await self.storage.create(
-                self.oauth_authorization_code_model,
+            authorization_code = await self.oauth_authorization_code_storage.create(
                 code=code_hash,
                 client_id=client.client_id,
                 subject_id=subject.id,
@@ -209,33 +205,3 @@ class AuthorizationCodeGrant:
                 code=code,
                 authorization_code=authorization_code,
             )
-
-
-class AuthorizationCodeGrantProvider(dishka.Provider):
-    def __init__(
-        self,
-        oauth_client_model: type[OAuthClientProtocol],
-        oauth_grant_model: type[OAuthGrantProtocol],
-        oauth_authorization_code_model: type[OAuthAuthorizationCodeProtocol],
-        code_hash_key: str,
-        code_prefix: str = _DEFAULT_CODE_PREFIX,
-    ) -> None:
-        super().__init__()
-        self.oauth_client_model = oauth_client_model
-        self.oauth_grant_model = oauth_grant_model
-        self.oauth_authorization_code_model = oauth_authorization_code_model
-        self.code_hash_key = code_hash_key
-        self.code_prefix = code_prefix
-
-    @dishka.provide(scope=dishka.Scope.REQUEST)
-    def get_authorization_code_grant(
-        self, storage: StorageProtocol
-    ) -> AuthorizationCodeGrant:
-        return AuthorizationCodeGrant(
-            storage=storage,
-            oauth_client_model=self.oauth_client_model,
-            oauth_grant_model=self.oauth_grant_model,
-            oauth_authorization_code_model=self.oauth_authorization_code_model,
-            code_hash_key=self.code_hash_key,
-            code_prefix=self.code_prefix,
-        )

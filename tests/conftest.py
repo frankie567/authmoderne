@@ -1,46 +1,43 @@
+import dataclasses
 import typing
-
-import dishka
-import pytest
+from collections.abc import Callable, Coroutine, Iterable
 
 from authmoderne.storage import DoesNotExist, StorageProtocol, StorageProvider
 
 
-class MockStorage(StorageProtocol):
-    def __init__(self) -> None:
-        self._data: dict[typing.Any, list[typing.Any]] = {}
+@dataclasses.dataclass
+class MockModel:
+    id: str
 
-    async def get_one_by[Model](
-        self, model: type[Model], **filters: typing.Any
-    ) -> Model:
-        objects = self._get_model_objects(model)
-        for obj in objects:
+
+class MockStorage[Model](StorageProtocol[Model]):
+    def __init__(self, model: type[Model], data: list[Model]) -> None:
+        self.model = model
+        self._data = data
+
+    async def get_one_by(self, **filters: typing.Any) -> Model:
+        for obj in self._data:
             if all(getattr(obj, key) == value for key, value in filters.items()):
                 return obj
         raise DoesNotExist()
 
-    async def create[Model](self, model: type[Model], **data: typing.Any) -> Model:
-        objects = self._get_model_objects(model)
-        obj = model(**data)
-        objects.append(obj)
+    async def create(self, **data: typing.Any) -> Model:
+        obj = self.model(**data)
+        self._data.append(obj)
         return obj
-
-    def _get_model_objects[Model](self, model: type[Model]) -> list[Model]:
-        if model not in self._data:
-            self._data[model] = []
-        return self._data[model]
 
 
 class MockStorageProvider(StorageProvider):
-    def __init__(self) -> None:
-        super().__init__()
-        self.storage = MockStorage()
+    def __init__[Model](
+        self, models: Iterable[type[Model]], data: dict[typing.Any, list[typing.Any]]
+    ) -> None:
+        super().__init__(models=models)
+        self.data = data
 
-    @dishka.provide(scope=dishka.Scope.REQUEST)
-    async def get_storage(self) -> StorageProtocol:
-        return self.storage
+    def _get_storage_factory[Model](
+        self, model: type[Model]
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
+        async def _get_storage() -> StorageProtocol[Model]:
+            return MockStorage[Model](model, self.data.get(model, []))
 
-
-@pytest.fixture
-def mock_storage() -> MockStorage:
-    return MockStorage()
+        return _get_storage
