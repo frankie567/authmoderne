@@ -313,5 +313,3 @@ link = "https://github.com/frankie567/authmoderne"
 [[project.extra.social]]
 icon = "fontawesome/brands/x-twitter"
 link = "https://x.com/fvoron"
-
-[project.markdown_extensions.md_in_html]

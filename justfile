@@ -20,6 +20,7 @@ test-cov-xml:
     uv run pytest --cov-report=xml
 
 docs-serve:
+    rm -rf trace.json site/ .cache/
     uv run zensical serve
 
 docs-build:
