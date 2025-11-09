@@ -29,15 +29,19 @@ class MockStorage[Model](StorageProtocol[Model]):
 
 class MockStorageProvider(StorageProvider):
     def __init__[Model](
-        self, models: Iterable[type[Model]], data: dict[typing.Any, list[typing.Any]]
+        self,
+        data: dict[typing.Any, list[typing.Any]],
+        models: Iterable[type[Model]] | None = None,
+        storage_class: type[MockStorage[typing.Any]] = MockStorage,
     ) -> None:
         super().__init__(models=models)
         self.data = data
+        self.storage_class = storage_class
 
-    def _get_storage_factory[Model](
-        self, model: type[Model]
-    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
-        async def _get_storage() -> StorageProtocol[Model]:
-            return MockStorage[Model](model, self.data.get(model, []))
+    def _get_storage_factory(
+        self,
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[typing.Any]]]:
+        async def _get_storage[Model](model: type[Model]) -> StorageProtocol[Model]:
+            return self.storage_class(model, self.data.get(model, []))
 
         return _get_storage

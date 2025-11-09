@@ -53,17 +53,23 @@ class StorageProvider(dishka.Provider):
     """Base class for storage providers."""
 
     def __init__[Model](
-        self, *args: typing.Any, models: Iterable[type[Model]], **kwargs: typing.Any
+        self,
+        *args: typing.Any,
+        models: Iterable[type[Model]] | None = None,
+        **kwargs: typing.Any,
     ) -> None:
         super().__init__()
-        for model in models:
-            self.provide(
-                self._get_storage_factory(model),
-                scope=dishka.Scope.REQUEST,
-                provides=StorageProtocol[model],  # type: ignore[valid-type]
-            )
+        if models is None:
+            self.provide(self._get_storage_factory(), scope=dishka.Scope.REQUEST)
+        else:
+            for model in models:
+                self.provide(
+                    self._get_storage_factory(),
+                    scope=dishka.Scope.REQUEST,
+                    provides=StorageProtocol[model],  # type: ignore[valid-type]
+                )
 
-    def _get_storage_factory[Model](
-        self, model: type[Model]
-    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
+    def _get_storage_factory(
+        self,
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[typing.Any]]]:
         raise NotImplementedError()
