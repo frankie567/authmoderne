@@ -46,6 +46,154 @@ hide:
         display: none;
     }
 }
+
+.coming-soon-badge {
+    display: inline-block;
+    background: transparent;
+    color: var(--md-primary-fg-color);
+    border: 2px solid var(--md-primary-fg-color);
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.hero-catchline {
+    font-size: 1.3em;
+    margin: 0.5rem 0 1.5rem 0;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: nowrap;
+    margin: 0;
+}
+
+.cta-buttons .md-button {
+    white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+    .cta-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Vision Section Styles */
+.vision-section {
+    max-width: 1000px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+.vision-hero {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.vision-hero h2 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.vision-tagline {
+    font-size: 1.3em;
+    color: var(--md-default-fg-color--light);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.problem-statement {
+    background: var(--md-code-bg-color);
+    border-radius: 12px;
+    padding: 3rem 2.5rem;
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.problem-statement h3 {
+    font-size: 1.8em;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.problem-statement p {
+    font-size: 1.2em;
+    line-height: 1.7;
+    margin: 1rem 0;
+}
+
+.principle-callout {
+    background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-accent-fg-color) 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    margin: 3rem 0;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.principle-callout p {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.features-intro {
+    text-align: center;
+    margin: 4rem 0 3rem 0;
+}
+
+.features-intro h3 {
+    font-size: 2em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.features-intro p {
+    font-size: 1.2em;
+    color: var(--md-default-fg-color--light);
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+    .vision-hero h2 {
+        font-size: 2em;
+    }
+
+    .vision-tagline {
+        font-size: 1.1em;
+    }
+
+    .problem-statement h3 {
+        font-size: 1.5em;
+    }
+
+    .problem-statement p {
+        font-size: 1.1em;
+    }
+
+    .principle-callout p {
+        font-size: 1.3em;
+    }
+
+    .features-intro h3 {
+        font-size: 1.6em;
+    }
+}
 </style>
 
 <div class="hero-wrapper">
@@ -288,133 +436,135 @@ hide:
     <!-- Center hero content -->
     <div class="hero-content">
         <h1>Authmoderne</h1>
-        <p><strong>Streamlined authentication for modern Python applications.</strong></p>
-        <p>
-            <a href="#installation" class="md-button md-button--primary">Get Started</a>
-            <a href="https://github.com/frankie567/authmoderne" class="md-button">View on GitHub</a>
-        </p>
+        <div class="coming-soon-badge">
+            Coming Soon
+        </div>
+        <p class="hero-catchline"><strong>Streamlined authentication for modern Python applications.</strong></p>
+        <div class="cta-buttons">
+            <a href="https://github.com/frankie567/authmoderne" class="md-button md-button--primary">
+                Star on GitHub
+            </a>
+            <a href="#our-vision" class="md-button">
+                Learn More
+            </a>
+        </div>
     </div>
 
 </div>
 
-## Features
+<div class="vision-section">
+
+<div class="vision-hero">
+<h2>The Future of Python Authentication</h2>
+<p class="vision-tagline">Built on years of experience with FastAPI Users and Fief, Authmoderne represents the next generation of authentication—flexible, modern, and truly yours.</p>
+</div>
+
+<div class="problem-statement">
+<h3>The Problem</h3>
+<p>There's no great <strong>framework-agnostic</strong> and <strong>exhaustive</strong> solution for authentication in Python. Developers are forced to choose between limited open-source options or locked-in hosted services like Clerk and Auth0.</p>
+</div>
+
+<div class="features-intro">
+<h3>What Makes Authmoderne Different</h3>
+<p>A complete authentication toolkit designed for developers who value control, flexibility, and modern standards.</p>
+</div>
+
+</div>
 
 <div class="grid cards" markdown>
 
-- :material-lightning-bolt:{ .lg .middle } **Fast & Efficient**
+- :lucide-puzzle:{ .lg .middle } **Flexibility & Modularity**
 
     ***
 
-    Built for performance with modern async Python, Authmoderne handles authentication without slowing down your application.
+    Pick exactly what you need. Compose authentication flows from independent, well-designed components that work together seamlessly or standalone.
 
-- :material-puzzle:{ .lg .middle } **Modular Design**
-
-    ***
-
-    Pick and choose the components you need. Clean, composable architecture inspired by Streamline Moderne principles.
-
-- :material-shield-check:{ .lg .middle } **Secure by Default**
+- :lucide-heart:{ .lg .middle } **Superior Developer Experience**
 
     ***
 
-    Industry-standard security practices built-in. Focus on your application, not security edge cases.
+    Intuitive APIs, full type hints, comprehensive documentation, and helpful error messages. Built by developers who understand your pain points.
 
-- :material-code-braces:{ .lg .middle } **Developer Friendly**
-
-    ***
-
-    Intuitive API with full type hints and comprehensive documentation. Get up and running in minutes.
-
-- :material-cog:{ .lg .middle } **Highly Configurable**
+- :lucide-refresh-cw:{ .lg .middle } **Modern Authentication Patterns**
 
     ***
 
-    Flexible configuration options to match your exact requirements without unnecessary complexity.
+    Passkeys, social logins, OAuth 2.1 server, and more. Stay ahead of the curve with built-in support for the latest standards.
 
-- :material-update:{ .lg .middle } **Modern Python**
+- :lucide-grid-3x3:{ .lg .middle } **Framework Agnostic**
 
     ***
 
-    Built with the latest Python features and best practices for clean, maintainable code.
+    Works with FastAPI, Starlette, and any Python web framework. One authentication toolkit for your entire Python ecosystem.
+
+- :lucide-shield-check:{ .lg .middle } **Security by Design**
+
+    ***
+
+    Industry-standard security practices baked into every layer. You own your authentication, but you don't have to be a security expert.
+
+- :lucide-git-branch:{ .lg .middle } **100% Open Source**
+
+    ***
+
+    Transparent development, no vendor lock-in, community-driven. Authentication is too important to trust to closed systems.
 
 </div>
 
 ---
 
-## Installation
+## :lucide-map: Roadmap
 
-Get started with Authmoderne in seconds:
+<p style="text-align: center; font-size: 1.1em; margin-bottom: 2rem;">We're working hard to bring Authmoderne to life. Here's what we're building:</p>
 
-```bash
-pip install authmoderne
-```
+- [ ] **Core foundations**: API principles, storage providers, basic bricks
+- [ ] **Plugin and hooks system**
+- [ ] **User management**
+    - [ ] Generic identifier: email, username, phone number
+    - [ ] Email verification
+    - [ ] Multiple emails
+- [ ] **Team management**
+- [ ] **Authentication methods**
+    - [ ] Password
+    - [ ] Social login
+    - [ ] Passkeys
+- [ ] **OAuth 2.1 server**
+    - [ ] Machine-to-machine / AI agents authentication
 
-Or with [uv](https://docs.astral.sh/uv/):
+!!! note
 
-```bash
-uv add authmoderne
-```
-
----
-
-## Quick Start
-
-<div class="grid" markdown>
-
-!!! example "Basic Usage"
-
-    ```python
-    # TODO
-    ```
-
-!!! tip "Configuration"
-
-    ```python
-    # TODO
-    ```
-
-</div>
+    This is a non-ordered list of features we're planning to implement. Priorities will soon be defined based on community feedback. Your input matters!
 
 ---
 
-## Why Authmoderne?
+## :lucide-users: Get Involved
 
-Authmoderne brings the elegance of **Streamline Moderne** design principles to Python authentication:
-
-- **Clean lines** - Simple, composable API without unnecessary complexity
-- **Functional beauty** - Every component serves a purpose
-- **Modern approach** - Built for contemporary Python applications
-
-Just like the Art Deco movement emphasized sleek, horizontal lines and minimal ornamentation, Authmoderne focuses on essential functionality delivered with style.
-
----
-
-## Next Steps
+<p style="text-align: center; font-size: 1.1em; margin-bottom: 2rem;">Authmoderne is open source and community-driven. We'd love your support!</p>
 
 <div class="grid cards" markdown>
 
-- :material-book-open-variant:{ .lg .middle } **Documentation**
+- :lucide-star:{ .lg .middle } **Star the Project**
 
     ***
 
-    Explore the complete API reference and detailed guides
+    Show your support and stay updated on our progress
 
-    [:octicons-arrow-right-24: API Reference](reference/authmoderne.md)
+    [:lucide-arrow-right: Star on GitHub](https://github.com/frankie567/authmoderne){ .md-button }
 
-- :material-github:{ .lg .middle } **Source Code**
-
-    ***
-
-    Contribute to the project or report issues on GitHub
-
-    [:octicons-arrow-right-24: GitHub Repository](https://github.com/frankie567/authmoderne)
-
-- :material-file-document:{ .lg .middle } **License**
+- :lucide-eye:{ .lg .middle } **Watch for Updates**
 
     ***
 
-    Authmoderne is open source under the MIT License
+    Get notified when we release new versions and features
 
-    [:octicons-arrow-right-24: MIT License](https://github.com/frankie567/authmoderne/blob/master/LICENSE)
+    [:lucide-arrow-right: Watch Repository](https://github.com/frankie567/authmoderne){ .md-button }
+
+- :lucide-messages-square:{ .lg .middle } **Join the Discussion**
+
+    ***
+
+    Share your ideas, requirements, and feedback
+
+    [:lucide-arrow-right: GitHub Discussions](https://github.com/frankie567/authmoderne/discussions){ .md-button }
 
 </div>
