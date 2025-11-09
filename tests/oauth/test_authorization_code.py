@@ -67,30 +67,54 @@ def subject() -> MockUser:
 
 
 @pytest.fixture
-async def oauth_client(mock_storage: MockStorage) -> MockOAuthClient:
-    return await mock_storage.create(MockOAuthClient, client_id="CLIENT_ID")
+def mock_data_store() -> dict[typing.Any, list[typing.Any]]:
+    return {
+        MockUser: [],
+        MockOAuthClient: [],
+        MockOAuthGrant: [],
+        MockOAuthAuthorizationCode: [],
+    }
+
+
+@pytest.fixture
+async def oauth_client(
+    mock_data_store: dict[typing.Any, list[typing.Any]],
+) -> MockOAuthClient:
+    oauth_client = MockOAuthClient(client_id="CLIENT_ID")
+    mock_data_store[MockOAuthClient].append(oauth_client)
+    return oauth_client
 
 
 @pytest.fixture
 async def oauth_grant(
-    mock_storage: MockStorage, subject: MockUser, oauth_client: MockOAuthClient
+    mock_data_store: dict[typing.Any, list[typing.Any]],
+    subject: MockUser,
+    oauth_client: MockOAuthClient,
 ) -> MockOAuthGrant:
-    return await mock_storage.create(
-        MockOAuthGrant,
+    oauth_grant = MockOAuthGrant(
         client_id=oauth_client.client_id,
         subject_id=subject.id,
         granted_at=datetime.now(UTC),
         scope="read write",
     )
+    mock_data_store[MockOAuthGrant].append(oauth_grant)
+    return oauth_grant
 
 
 @pytest.fixture
-def authorization_code_grant(mock_storage: MockStorage) -> AuthorizationCodeGrant:
+def authorization_code_grant(
+    mock_data_store: dict[typing.Any, list[typing.Any]],
+) -> AuthorizationCodeGrant:
     return AuthorizationCodeGrant(
-        storage=mock_storage,
-        oauth_client_model=MockOAuthClient,
-        oauth_grant_model=MockOAuthGrant,
-        oauth_authorization_code_model=MockOAuthAuthorizationCode,
+        oauth_client_storage=MockStorage(
+            MockOAuthClient, mock_data_store[MockOAuthClient]
+        ),
+        oauth_grant_storage=MockStorage(
+            MockOAuthGrant, mock_data_store[MockOAuthGrant]
+        ),
+        oauth_authorization_code_storage=MockStorage(
+            MockOAuthAuthorizationCode, mock_data_store[MockOAuthAuthorizationCode]
+        ),
         code_hash_key="SECRET",
     )
 

@@ -1,4 +1,5 @@
 import typing
+from collections.abc import Callable, Coroutine, Iterable
 
 import dishka
 
@@ -17,16 +18,15 @@ class DoesNotExist(StorageError):
         super().__init__(message)
 
 
-class StorageProtocol(typing.Protocol):
+class StorageProtocol[Model](typing.Protocol):
     """Protocol for storage backends."""
 
-    async def get_one_by[Model](
-        self, model: type[Model], **filters: typing.Any
-    ) -> Model:
+    model: type[Model]
+
+    async def get_one_by(self, **filters: typing.Any) -> Model:
         """Retrieve an object by arbitrary filters.
 
         Args:
-            model: The model class to query.
             **filters: A set of key-value pairs to filter the query.
 
         Raises:
@@ -37,11 +37,10 @@ class StorageProtocol(typing.Protocol):
         """
         ...
 
-    async def create[Model](self, model: type[Model], **data: typing.Any) -> Model:
+    async def create(self, **data: typing.Any) -> Model:
         """Create a new object in storage.
 
         Args:
-            model: The model class to create.
             object: The object data to create.
 
         Returns:
@@ -52,3 +51,19 @@ class StorageProtocol(typing.Protocol):
 
 class StorageProvider(dishka.Provider):
     """Base class for storage providers."""
+
+    def __init__[Model](
+        self, *args: typing.Any, models: Iterable[type[Model]], **kwargs: typing.Any
+    ) -> None:
+        super().__init__()
+        for model in models:
+            self.provide(
+                self._get_storage_factory(model),
+                scope=dishka.Scope.REQUEST,
+                provides=StorageProtocol[model],  # type: ignore[valid-type]
+            )
+
+    def _get_storage_factory[Model](
+        self, model: type[Model]
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
+        raise NotImplementedError()

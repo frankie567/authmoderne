@@ -1,5 +1,5 @@
 import typing
-from collections.abc import AsyncIterable
+from collections.abc import AsyncIterable, Callable, Coroutine, Iterable
 
 import dishka
 from sqlalchemy import URL, select
@@ -18,30 +18,29 @@ class Base(DeclarativeBase):
     pass
 
 
-class SQLAlchemyStorage(StorageProtocol):
-    def __init__(self, session: AsyncSession) -> None:
+class SQLAlchemyStorage[Model](StorageProtocol[Model]):
+    def __init__(self, model: type[Model], session: AsyncSession) -> None:
+        self.model = model
         self.session = session
 
-    async def get_one_by[Model](
-        self, model: type[Model], **filters: typing.Any
-    ) -> Model:
-        statement = select(model).filter_by(**filters)
+    async def get_one_by(self, **filters: typing.Any) -> Model:
+        statement = select(self.model).filter_by(**filters)
         result = await self.session.execute(statement)
         object = result.scalar_one_or_none()
         if object is None:
             raise DoesNotExist()
         return object
 
-    async def create[Model](self, model: type[Model], **data: typing.Any) -> Model:
-        object = model(**data)
+    async def create(self, **data: typing.Any) -> Model:
+        object = self.model(**data)
         self.session.add(object)
         await self.session.flush()
         return object
 
 
 class SQLAlchemyEngineProvider(StorageProvider):
-    def __init__(self, url: str | URL) -> None:
-        super().__init__()
+    def __init__[Model](self, url: str | URL, models: Iterable[type[Model]]) -> None:
+        super().__init__(models=models)
         self.url = url
 
     @dishka.provide(scope=dishka.Scope.APP)
@@ -69,9 +68,15 @@ class SQLAlchemyEngineProvider(StorageProvider):
             else:
                 await session.commit()
 
-    @dishka.provide(scope=dishka.Scope.REQUEST)
-    async def get_storage(self, session: AsyncSession) -> SQLAlchemyStorage:
-        return SQLAlchemyStorage(session)
+    def _get_storage_factory[Model](
+        self, model: type[Model]
+    ) -> Callable[..., Coroutine[None, None, StorageProtocol[Model]]]:
+        async def _get_storage(
+            session: AsyncSession,
+        ) -> StorageProtocol[Model]:
+            return SQLAlchemyStorage[Model](model, session)
+
+        return _get_storage
 
 
 __all__ = [
