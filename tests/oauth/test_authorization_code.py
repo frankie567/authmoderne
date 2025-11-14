@@ -104,7 +104,9 @@ async def oauth_grant(
 @pytest.fixture
 def authorization_code_grant(
     mock_data_store: dict[typing.Any, list[typing.Any]],
-) -> AuthorizationCodeGrant:
+) -> AuthorizationCodeGrant[
+    MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+]:
     return AuthorizationCodeGrant(
         oauth_client_storage=MockStorage(
             MockOAuthClient, mock_data_store[MockOAuthClient]
@@ -122,7 +124,10 @@ def authorization_code_grant(
 @pytest.mark.anyio
 class TestAuthorizationCodeGrantValidateRequest:
     async def test_missing_subject(
-        self, authorization_code_grant: AuthorizationCodeGrant
+        self,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         payload = {"response_type": "code"}
 
@@ -160,7 +165,9 @@ class TestAuthorizationCodeGrantValidateRequest:
         self,
         subject: MockUser,
         payload: dict[str, typing.Any],
-        authorization_code_grant: AuthorizationCodeGrant,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         with pytest.raises(AuthorizationCodeGrantRedirectionError) as exc_info:
             await authorization_code_grant(subject, payload)
@@ -168,7 +175,11 @@ class TestAuthorizationCodeGrantValidateRequest:
         assert exc_info.value.error == "invalid_request"
 
     async def test_missing_client_id(
-        self, subject: MockUser, authorization_code_grant: AuthorizationCodeGrant
+        self,
+        subject: MockUser,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         payload = {"response_type": "code"}
 
@@ -176,7 +187,11 @@ class TestAuthorizationCodeGrantValidateRequest:
             await authorization_code_grant(subject, payload)
 
     async def test_invalid_client(
-        self, subject: MockUser, authorization_code_grant: AuthorizationCodeGrant
+        self,
+        subject: MockUser,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         payload = {
             "response_type": "code",
@@ -192,7 +207,9 @@ class TestAuthorizationCodeGrantValidateRequest:
         self,
         subject: MockUser,
         oauth_client: MockOAuthClient,
-        authorization_code_grant: AuthorizationCodeGrant,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         payload = {
             "response_type": "code",
@@ -211,7 +228,9 @@ class TestAuthorizationCodeGrantValidateRequest:
         subject: MockUser,
         oauth_client: MockOAuthClient,
         oauth_grant: MockOAuthGrant,
-        authorization_code_grant: AuthorizationCodeGrant,
+        authorization_code_grant: AuthorizationCodeGrant[
+            MockOAuthClient, MockOAuthGrant, MockOAuthAuthorizationCode
+        ],
     ) -> None:
         payload = {
             "response_type": "code",

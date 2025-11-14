@@ -1,9 +1,12 @@
 import typing
 from datetime import datetime
 
+from authmoderne.models import model_protocol
+
 from ..types import CodeChallengeMethod
 
 
+@model_protocol
 class OAuthClientProtocol(typing.Protocol):
     """Protocol for OAuth client implementations."""
 
@@ -14,6 +17,7 @@ class OAuthClientProtocol(typing.Protocol):
     def client_id(self, value: str) -> None: ...
 
 
+@model_protocol
 class OAuthGrantProtocol(typing.Protocol):
     """Protocol for OAuth grant implementations."""
 
@@ -42,6 +46,7 @@ class OAuthGrantProtocol(typing.Protocol):
     def scope(self, value: str) -> None: ...
 
 
+@model_protocol
 class OAuthAuthorizationCodeProtocol(typing.Protocol):
     """Protocol for OAuth authorization code implementations."""
 

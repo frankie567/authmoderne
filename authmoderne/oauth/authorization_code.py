@@ -1,6 +1,7 @@
 import typing
 from datetime import UTC, datetime, timedelta
 
+import dishka
 from pydantic import AnyUrl, BaseModel, Field, HttpUrl, ValidationError
 
 from authmoderne.crypto import generate_token_hash_pair
@@ -127,14 +128,16 @@ class AuthorizationCodeGrantGrantedResponse[S: Subject]:
 _DEFAULT_CODE_PREFIX = "am_code_"
 
 
-class AuthorizationCodeGrant:
+class AuthorizationCodeGrant[
+    OC: OAuthClientProtocol,
+    OG: OAuthGrantProtocol,
+    OAC: OAuthAuthorizationCodeProtocol,
+]:
     def __init__(
         self,
-        oauth_client_storage: StorageProtocol[OAuthClientProtocol],
-        oauth_grant_storage: StorageProtocol[OAuthGrantProtocol],
-        oauth_authorization_code_storage: StorageProtocol[
-            OAuthAuthorizationCodeProtocol
-        ],
+        oauth_client_storage: StorageProtocol[OC],
+        oauth_grant_storage: StorageProtocol[OG],
+        oauth_authorization_code_storage: StorageProtocol[OAC],
         code_hash_key: str,
         code_prefix: str = _DEFAULT_CODE_PREFIX,
     ) -> None:
@@ -205,3 +208,31 @@ class AuthorizationCodeGrant:
                 code=code,
                 authorization_code=authorization_code,
             )
+
+
+class AuthorizationCodeGrantProvider(dishka.Provider):
+    def __init__(
+        self, code_hash_key: str, code_prefix: str = _DEFAULT_CODE_PREFIX
+    ) -> None:
+        super().__init__()
+        self.code_hash_key = code_hash_key
+        self.code_prefix = code_prefix
+
+    @dishka.provide(scope=dishka.Scope.REQUEST)
+    def get_authorization_code_grant[
+        OC: OAuthClientProtocol,
+        OG: OAuthGrantProtocol,
+        OAC: OAuthAuthorizationCodeProtocol,
+    ](
+        self,
+        oauth_client_storage: StorageProtocol[OC],
+        oauth_grant_storage: StorageProtocol[OG],
+        oauth_authorization_code_storage: StorageProtocol[OAC],
+    ) -> AuthorizationCodeGrant[OC, OG, OAC]:
+        return AuthorizationCodeGrant(
+            oauth_client_storage=oauth_client_storage,
+            oauth_grant_storage=oauth_grant_storage,
+            oauth_authorization_code_storage=oauth_authorization_code_storage,
+            code_hash_key=self.code_hash_key,
+            code_prefix=self.code_prefix,
+        )

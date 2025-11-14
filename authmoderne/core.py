@@ -10,9 +10,10 @@ class Authmoderne:
     def __init__(
         self,
         storage: StorageProvider | Iterable[StorageProvider],
+        plugins: Iterable[dishka.Provider] | None = None,
     ) -> None:
         storages = [storage] if isinstance(storage, StorageProvider) else storage
-        self._container = dishka.make_async_container(*storages)
+        self._container = dishka.make_async_container(*storages, *(plugins or ()))
 
     def __call__(self) -> "AuthmoderneRequest":
         return AuthmoderneRequest(self._container)
@@ -40,6 +41,9 @@ class AuthmoderneRequest:
         traceback: object,
     ) -> None:
         await self._exit_stack.aclose()
+
+    async def get[C](self, cls: type[C]) -> C:
+        return await self.request_container.get(cls)
 
     async def get_storage[Model](self, model: type[Model]) -> StorageProtocol[Model]:
         return await self.request_container.get(StorageProtocol[model])  # type: ignore[valid-type]

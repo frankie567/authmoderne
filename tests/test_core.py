@@ -3,6 +3,16 @@ import dataclasses
 import pytest
 
 from authmoderne.core import Authmoderne
+from authmoderne.oauth.authorization_code import (
+    AuthorizationCodeGrant,
+    AuthorizationCodeGrantProvider,
+)
+from authmoderne.oauth.models.sqlalchemy import (
+    OAuthAuthorizationCode,
+    OAuthClient,
+    OAuthGrant,
+)
+from authmoderne.storage.sqlalchemy import SQLAlchemyEngineProvider
 from tests.conftest import MockModel, MockStorage, MockStorageProvider
 
 
@@ -42,4 +52,19 @@ class TestAuthmoderneGetStorage:
             assert isinstance(first_storage, FirstMockStorage)
 
             second_storage = await authmoderne_request.get_storage(SecondMockModel)
+
             assert isinstance(second_storage, SecondMockStorage)
+
+
+@pytest.mark.parametrize("anyio_backend", ["asyncio"])
+async def test_authorization_code_provider(anyio_backend: str) -> None:
+    authmoderne = Authmoderne(
+        SQLAlchemyEngineProvider("sqlite+aiosqlite:///:memory:"),
+        plugins=[AuthorizationCodeGrantProvider("SECRET_KEY")],
+    )
+    async with authmoderne() as authmoderne_request:
+        authorization_code_grant = await authmoderne_request.get(
+            AuthorizationCodeGrant[OAuthClient, OAuthGrant, OAuthAuthorizationCode]
+        )
+        assert isinstance(authorization_code_grant, AuthorizationCodeGrant)
+        assert authorization_code_grant.oauth_client_storage.model is OAuthClient
