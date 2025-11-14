@@ -47,6 +47,10 @@ class PasswordAuthenticateRequest[Identifier](BaseModel):
     password: str
 
 
+class PasswordEnrollRequest(BaseModel):
+    password: str
+
+
 class PasswordFactor[S: PasswordSubjectProtocol, Identifier]:
     def __init__(
         self,
@@ -85,6 +89,20 @@ class PasswordFactor[S: PasswordSubjectProtocol, Identifier]:
             subject = await self.subject_storage.update(
                 subject, hashed_password=updated_hash
             )
+
+        return subject
+
+    async def enroll(self, subject: S, payload: dict[str, typing.Any]) -> S:
+        try:
+            request = PasswordEnrollRequest.model_validate(payload)
+        except ValidationError as e:
+            raise InvalidRequestError.from_validation_error(e) from e
+
+        hashed_password = self.hasher.hash(request.password)
+
+        subject = await self.subject_storage.update(
+            subject, hashed_password=hashed_password
+        )
 
         return subject
 

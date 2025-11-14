@@ -126,3 +126,29 @@ class TestAuthenticate:
 
         assert subject.id == "1"
         assert subject.hashed_password != hashed_password
+
+
+@pytest.mark.anyio
+class TestEnroll:
+    async def test_invalid_request(
+        self,
+        storage: MockStorage[MockPasswordSubject],
+        password_factor: PasswordFactor[MockPasswordSubject, str],
+    ) -> None:
+        subject = await storage.create(id="1", username="john", hashed_password=None)
+        with pytest.raises(InvalidRequestError):
+            await password_factor.enroll(subject, {})
+
+    async def test_valid(
+        self,
+        storage: MockStorage[MockPasswordSubject],
+        password_factor: PasswordFactor[MockPasswordSubject, str],
+    ) -> None:
+        subject = await storage.create(id="1", username="john", hashed_password=None)
+
+        updated_subject = await password_factor.enroll(
+            subject, {"password": "password"}
+        )
+
+        assert updated_subject.id == "1"
+        assert updated_subject.hashed_password is not None
