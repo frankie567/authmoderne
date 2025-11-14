@@ -71,5 +71,7 @@ class StorageProvider(dishka.Provider):
 
     def _get_storage_factory(
         self,
-    ) -> Callable[..., Coroutine[None, None, StorageProtocol[typing.Any]]]:
+    ) -> Callable[
+        ..., Coroutine[None, None, StorageProtocol[typing.Any]]
+    ]:  # pragma: no cover
         raise NotImplementedError()

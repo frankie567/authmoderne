@@ -50,6 +50,6 @@ class AuthmoderneRequest:
 
     @property
     def request_container(self) -> dishka.AsyncContainer:
-        if self._request_container is None:
+        if self._request_container is None:  # pragma: no cover
             raise RuntimeError("Request container is not initialized.")  # noqa: TRY003
         return self._request_container
