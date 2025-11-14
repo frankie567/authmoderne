@@ -48,6 +48,18 @@ class StorageProtocol[Model](typing.Protocol):
         """
         ...
 
+    async def update(self, obj: Model, **data: typing.Any) -> Model:
+        """Update an existing object in storage.
+
+        Args:
+            obj: The object to update.
+            **data: The data to update the object with.
+
+        Returns:
+            The updated object.
+        """
+        ...
+
 
 class StorageProvider(dishka.Provider):
     """Base class for storage providers."""

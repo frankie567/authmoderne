@@ -37,6 +37,13 @@ class SQLAlchemyStorage[Model](StorageProtocol[Model]):
         await self.session.flush()
         return object
 
+    async def update(self, obj: Model, **data: typing.Any) -> Model:
+        for key, value in data.items():
+            setattr(obj, key, value)
+        self.session.add(obj)
+        await self.session.flush()
+        return obj
+
 
 class SQLAlchemyEngineProvider(StorageProvider):
     def __init__[Model](

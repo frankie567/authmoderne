@@ -26,6 +26,11 @@ class MockStorage[Model](StorageProtocol[Model]):
         self._data.append(obj)
         return obj
 
+    async def update(self, obj: Model, **data: typing.Any) -> Model:
+        for key, value in data.items():
+            setattr(obj, key, value)
+        return obj
+
 
 class MockStorageProvider(StorageProvider):
     def __init__[Model](

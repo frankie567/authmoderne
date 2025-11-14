@@ -63,6 +63,13 @@ async def test_sqlalchemy_storage(
     with pytest.raises(DoesNotExist):
         await sqlalchemy_storage.get_one_by(name="Non-Existent Model")
 
+    # Update the model instance
+    updated_instance = await sqlalchemy_storage.update(
+        model_instance, name="Updated Model"
+    )
+    assert updated_instance.id == model_instance.id
+    assert updated_instance.name == "Updated Model"
+
 
 @pytest.mark.parametrize("anyio_backend", ["asyncio"])
 async def test_engine_provider(anyio_backend: str) -> None:
