@@ -2,7 +2,11 @@ import dataclasses
 
 import pytest
 
-from authmoderne.core import Authmoderne
+from authmoderne.core import Authmoderne, SubjectConfiguration
+from authmoderne.identifier import (
+    EmailIdentifierProvider,
+    EmailSubjectModel,
+)
 from authmoderne.oauth.authorization_code import (
     AuthorizationCodeGrant,
     AuthorizationCodeGrantProvider,
@@ -54,6 +58,30 @@ class TestAuthmoderneGetStorage:
             second_storage = await authmoderne_request.get_storage(SecondMockModel)
 
             assert isinstance(second_storage, SecondMockStorage)
+
+
+@pytest.mark.anyio
+async def test_subject_configuration() -> None:
+    @dataclasses.dataclass
+    class MockSubject(EmailSubjectModel):
+        id: str
+        email: str
+
+    authmoderne = Authmoderne(
+        MockStorageProvider(
+            {
+                MockSubject: [
+                    MockSubject(id="1", email="john@example.com"),
+                ]
+            }
+        ),
+        subject_configuration=SubjectConfiguration(EmailIdentifierProvider()),
+    )
+
+    async with authmoderne() as authmoderne_request:
+        identifier = await authmoderne_request.get_identifier(MockSubject)
+        subject = await identifier.get_by_identifier("john@example.com")
+        assert subject.id == "1"
 
 
 @pytest.mark.parametrize("anyio_backend", ["asyncio"])

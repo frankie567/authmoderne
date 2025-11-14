@@ -5,12 +5,12 @@ import dishka
 from pydantic import AnyUrl, BaseModel, Field, HttpUrl, ValidationError
 
 from authmoderne.crypto import generate_token_hash_pair
-from authmoderne.oauth.models.base import OAuthAuthorizationCodeProtocol
+from authmoderne.oauth.models import OAuthAuthorizationCodeModel
 from authmoderne.subject import Subject
 
 from ..exceptions import AuthmoderneException
 from ..storage import DoesNotExist, StorageProtocol
-from .models import OAuthClientProtocol, OAuthGrantProtocol
+from .models import OAuthClientModel, OAuthGrantModel
 from .types import CodeChallengeMethod
 
 
@@ -80,7 +80,7 @@ class AuthorizationCodeGrantRequest(BaseModel):
 
 class AuthorizationCodeGrantConsentResponse[S: Subject]:
     subject: S
-    client: OAuthClientProtocol
+    client: OAuthClientModel
     scope: str | None
     redirect_uri: str | None
     state: str | None
@@ -90,7 +90,7 @@ class AuthorizationCodeGrantConsentResponse[S: Subject]:
     def __init__(
         self,
         *,
-        client: OAuthClientProtocol,
+        client: OAuthClientModel,
         scope: str | None,
         redirect_uri: str | None,
         state: str | None,
@@ -107,17 +107,17 @@ class AuthorizationCodeGrantConsentResponse[S: Subject]:
 
 class AuthorizationCodeGrantGrantedResponse[S: Subject]:
     subject: S
-    client: OAuthClientProtocol
+    client: OAuthClientModel
     code: str
-    authorization_code: OAuthAuthorizationCodeProtocol
+    authorization_code: OAuthAuthorizationCodeModel
 
     def __init__(
         self,
         *,
         subject: S,
-        client: OAuthClientProtocol,
+        client: OAuthClientModel,
         code: str,
-        authorization_code: OAuthAuthorizationCodeProtocol,
+        authorization_code: OAuthAuthorizationCodeModel,
     ) -> None:
         self.subject = subject
         self.client = client
@@ -129,9 +129,9 @@ _DEFAULT_CODE_PREFIX = "am_code_"
 
 
 class AuthorizationCodeGrant[
-    OC: OAuthClientProtocol,
-    OG: OAuthGrantProtocol,
-    OAC: OAuthAuthorizationCodeProtocol,
+    OC: OAuthClientModel,
+    OG: OAuthGrantModel,
+    OAC: OAuthAuthorizationCodeModel,
 ]:
     def __init__(
         self,
@@ -220,9 +220,9 @@ class AuthorizationCodeGrantProvider(dishka.Provider):
 
     @dishka.provide(scope=dishka.Scope.REQUEST)
     def get_authorization_code_grant[
-        OC: OAuthClientProtocol,
-        OG: OAuthGrantProtocol,
-        OAC: OAuthAuthorizationCodeProtocol,
+        OC: OAuthClientModel,
+        OG: OAuthGrantModel,
+        OAC: OAuthAuthorizationCodeModel,
     ](
         self,
         oauth_client_storage: StorageProtocol[OC],

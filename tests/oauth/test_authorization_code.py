@@ -13,6 +13,11 @@ from authmoderne.oauth.authorization_code import (
     MissingOrInvalidClientIDError,
     UnauthenticatedSubjectError,
 )
+from authmoderne.oauth.models.base import (
+    OAuthAuthorizationCodeModel,
+    OAuthClientModel,
+    OAuthGrantModel,
+)
 from authmoderne.oauth.types import CodeChallengeMethod
 from authmoderne.subject import Subject
 from tests.conftest import MockStorage
@@ -24,28 +29,20 @@ class MockUser(Subject):
 
 
 @dataclasses.dataclass
-class MockOAuthClient:
+class MockOAuthClient(OAuthClientModel):
     client_id: str
-
-    @property
-    def id(self) -> str:
-        return self.client_id
 
 
 @dataclasses.dataclass
-class MockOAuthGrant:
+class MockOAuthGrant(OAuthGrantModel):
     client_id: str
     subject_id: str
     granted_at: datetime
     scope: str
 
-    @property
-    def id(self) -> str:
-        return f"{self.client_id}:{self.subject_id}"
-
 
 @dataclasses.dataclass
-class MockOAuthAuthorizationCode:
+class MockOAuthAuthorizationCode(OAuthAuthorizationCodeModel):
     code: str
     client_id: str
     subject_id: str
@@ -55,10 +52,6 @@ class MockOAuthAuthorizationCode:
     scope: str
     code_challenge: str
     code_challenge_method: CodeChallengeMethod
-
-    @property
-    def id(self) -> str:
-        return self.code
 
 
 @pytest.fixture

@@ -6,9 +6,14 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from ...storage.sqlalchemy import Base
 from ..types import CodeChallengeMethod
+from .base import (
+    OAuthAuthorizationCodeModel,
+    OAuthClientModel,
+    OAuthGrantModel,
+)
 
 
-class OAuthClient(Base):
+class OAuthClient(OAuthClientModel, Base):
     __tablename__ = "oauth_clients"
 
     _client_id: Mapped[str] = mapped_column(
@@ -24,7 +29,7 @@ class OAuthClient(Base):
         self._client_id = value
 
 
-class OAuthGrant(Base):
+class OAuthGrant(OAuthGrantModel, Base):
     __tablename__ = "oauth_grants"
 
     _client_id: Mapped[str] = mapped_column(
@@ -74,7 +79,9 @@ class OAuthGrant(Base):
         self._scope = value
 
 
-class OAuthAuthorizationCode(Base):
+class OAuthAuthorizationCode(
+    OAuthAuthorizationCodeModel,
+):
     __tablename__ = "oauth_authorization_codes"
 
     _code: Mapped[str] = mapped_column(

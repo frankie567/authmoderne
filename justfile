@@ -1,7 +1,7 @@
 # https://just.systems
 
 install:
-    uv sync --all-extras
+    uv sync --all-extras --managed-python
 
 lint:
     uv run ruff format .

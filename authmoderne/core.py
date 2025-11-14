@@ -3,17 +3,36 @@ from collections.abc import Iterable
 
 import dishka
 
+from authmoderne.identifier import IdentifierProtocol, IdentifierProvider
+from authmoderne.subject import Subject
+
 from .storage import StorageProtocol, StorageProvider
 
 
-class Authmoderne:
+class SubjectConfiguration[S: Subject]:
     def __init__(
         self,
+        identifier_provider: IdentifierProvider[S],
+    ) -> None:
+        self.identifier_provider = identifier_provider
+
+    def get_providers(self) -> Iterable[dishka.Provider]:
+        yield self.identifier_provider
+
+
+class Authmoderne:
+    def __init__[S: Subject](
+        self,
         storage: StorageProvider | Iterable[StorageProvider],
+        subject_configuration: SubjectConfiguration[S] | None = None,
         plugins: Iterable[dishka.Provider] | None = None,
     ) -> None:
         storages = [storage] if isinstance(storage, StorageProvider) else storage
-        self._container = dishka.make_async_container(*storages, *(plugins or ()))
+        self._container = dishka.make_async_container(
+            *storages,
+            *subject_configuration.get_providers() if subject_configuration else (),
+            *(plugins or ()),
+        )
 
     def __call__(self) -> "AuthmoderneRequest":
         return AuthmoderneRequest(self._container)
@@ -47,6 +66,11 @@ class AuthmoderneRequest:
 
     async def get_storage[Model](self, model: type[Model]) -> StorageProtocol[Model]:
         return await self.request_container.get(StorageProtocol[model])  # type: ignore[valid-type]
+
+    async def get_identifier[S: Subject](
+        self, subject: type[S]
+    ) -> IdentifierProtocol[S]:
+        return await self.request_container.get(IdentifierProtocol[subject])  # type: ignore[valid-type]
 
     @property
     def request_container(self) -> dishka.AsyncContainer:

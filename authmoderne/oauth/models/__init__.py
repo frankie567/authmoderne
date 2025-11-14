@@ -1,11 +1,11 @@
 from .base import (
-    OAuthAuthorizationCodeProtocol,
-    OAuthClientProtocol,
-    OAuthGrantProtocol,
+    OAuthAuthorizationCodeModel,
+    OAuthClientModel,
+    OAuthGrantModel,
 )
 
 __all__ = [
-    "OAuthClientProtocol",
-    "OAuthGrantProtocol",
-    "OAuthAuthorizationCodeProtocol",
+    "OAuthClientModel",
+    "OAuthGrantModel",
+    "OAuthAuthorizationCodeModel",
 ]

@@ -63,12 +63,14 @@ target-version = "py313"
 
 [tool.ruff.lint]
 extend-select = ["I", "TRY", "UP", "T201"]
+ignore = ["UP049"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=authmoderne/ --cov-report=term-missing"
 
 [tool.uv]
 default-groups = ["dev"]
+python-preference = "managed"
 
 [tool.mypy]
 warn_redundant_casts = true

@@ -1,20 +1,9 @@
-def model_protocol[C](cls: type[C]) -> type[C]:
+class AuthmoderneModel:
     """
-    Stubbed version of typing.runtime_protocol so our models protocol
-    can both:
+    Base class for Authmoderne models.
 
-    * Work with dishka's runtime type checking resolver.
-    * Don't complain because of our property methods.
-
-    Args:
-        cls: The protocol class to mark as a runtime protocol.
-
-    Returns:
-        The same class marked as a runtime protocol.
+    All base data models in Authmoderne should inherit from this class.
     """
-    setattr(cls, "_is_runtime_protocol", True)
-    setattr(cls, "__non_callable_proto_members__", set())
-    return cls
 
 
-__all__ = ["model_protocol"]
+__all__ = ["AuthmoderneModel"]

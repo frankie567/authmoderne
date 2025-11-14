@@ -3,8 +3,7 @@ import typing
 from pydantic import BaseModel, ValidationError
 
 from authmoderne.exceptions import AuthmoderneException, InvalidRequestError
-from authmoderne.identifier import IdentifierProtocol
-from authmoderne.models import model_protocol
+from authmoderne.identifier import IdentifierProtocol, InvalidIdentifierFormat
 from authmoderne.storage import DoesNotExist, StorageProtocol
 from authmoderne.subject import Subject
 
@@ -33,17 +32,12 @@ class PasswordHasherProtocol(typing.Protocol):
     ) -> str: ...  # pragma: no cover
 
 
-@model_protocol
-class PasswordSubjectProtocol(Subject, typing.Protocol):
-    @property
-    def hashed_password(self) -> str | None: ...
-
-    @hashed_password.setter
-    def hashed_password(self, value: str | None) -> None: ...
+class PasswordSubjectModel(Subject):
+    hashed_password: str | None
 
 
-class PasswordAuthenticateRequest[Identifier](BaseModel):
-    identifier: Identifier
+class PasswordAuthenticateRequest(BaseModel):
+    identifier: typing.Any
     password: str
 
 
@@ -51,10 +45,10 @@ class PasswordEnrollRequest(BaseModel):
     password: str
 
 
-class PasswordFactor[S: PasswordSubjectProtocol, Identifier]:
+class PasswordFactor[S: PasswordSubjectModel]:
     def __init__(
         self,
-        identifier: IdentifierProtocol[S, Identifier],
+        identifier: IdentifierProtocol[S],
         subject_storage: StorageProtocol[S],
         hasher: PasswordHasherProtocol,
     ) -> None:
@@ -64,12 +58,26 @@ class PasswordFactor[S: PasswordSubjectProtocol, Identifier]:
 
     async def authenticate(self, payload: dict[str, typing.Any]) -> S:
         try:
-            request = PasswordAuthenticateRequest[Identifier].model_validate(payload)
+            request = PasswordAuthenticateRequest.model_validate(payload)
         except ValidationError as e:
             raise InvalidRequestError.from_validation_error(e) from e
 
         try:
-            subject = await self.identifier.get_by_identifier(request.identifier)
+            identifier = await self.identifier.parse_identifier(request.identifier)
+        except InvalidIdentifierFormat as e:
+            raise InvalidRequestError(
+                [
+                    {
+                        "type": "value_error",
+                        "loc": ("identifier",),
+                        "msg": e.message,
+                        "input": request.identifier,
+                    }
+                ]
+            )
+
+        try:
+            subject = await self.identifier.get_by_identifier(identifier)
         except DoesNotExist:
             self._raise_invalid_credentials_timing_safe(request.password)
 

@@ -1,10 +1,9 @@
 import typing
 
-from authmoderne.models import model_protocol
+from authmoderne.models import AuthmoderneModel
 
 
-@model_protocol
-class Subject(typing.Protocol):
+class Subject(AuthmoderneModel):
     id: typing.Any
 
 
