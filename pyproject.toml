@@ -2,7 +2,7 @@
 [project]
 name = "authmoderne"
 authors = [
-  { name = "authmoderne", email = "contact@francoisvoron.com" }
+  { name = "authmoderne", email = "hello@fvoron.com" }
 ]
 description = "Streamlined authentication for modern Python applications."
 readme = "README.md"
